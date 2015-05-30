@@ -3,12 +3,19 @@ set -e
 
 WORDPRESS_VERSION=4.2.2
 
+APACHE_GROUP=www-data
 WORDPRESS_HOME=/var/www
 WORDPRESS_USER=pi
 WORDPRESS_DBHOST=localhost
 WORDPRESS_DBNAME=wordpress
 WORDPRESS_DBUSER=wordpress
 WORDPRESS_DBPASS=wordpress
+
+echo "Setting $APACHE_GROUP ..."
+
+usermod -G $APACHE_GROUP -a $WORDPRESS_USER
+chgrp -R $APACHE_GROUP $WORDPRESS_HOME
+chmod -R g+w $WORDPRESS_HOME
 
 echo "Install wp-cli ..."
 
@@ -36,10 +43,6 @@ export WP_CLI_CONFIG_PATH=$WP_CLI_CONFIG_PATH
 export PATH=$WP_CLI_HOME:\$PATH
 EOF
 
-pushd $(dirname $WORDPRESS_HOME)
-echo "Delete old WordPress files ..."
-[[ -f $WORDPRESS_HOME/index.php ]] && [[ -d .git ]] && git status --ignored -s wordpress | grep '^!!' | cut -d' ' -f2 | xargs -- rm -r
-
 echo "Install WordPress ..."
 su -lc /bin/bash $WORDPRESS_USER <<EOF
 set -e
@@ -48,7 +51,7 @@ if [[ -f /vagrant/cache/en_US-${WORDPRESS_VERSION}.tar.gz ]]; then
   cp -n /vagrant/cache/en_US-${WORDPRESS_VERSION}.tar.gz \$HOME/.wp-cli/cache/core/
 fi
 
-[[ -f $WORDPRESS_HOME/wp-config-sample.php ]] || $WP_CLI_CMD core download --path=${WORDPRESS_HOME} --locale=en_US --version=${WORDPRESS_VERSION}
+[[ -f $WORDPRESS_HOME/wp-config-sample.php ]] || $WP_CLI_CMD core download --force --path=${WORDPRESS_HOME} --locale=en_US --version=${WORDPRESS_VERSION}
 rm -f $WORDPRESS_HOME/wp-config.php
 $WP_CLI_CMD core config --dbname=${WORDPRESS_DBNAME} --dbuser=${WORDPRESS_DBUSER} --dbpass=${WORDPRESS_DBPASS} --dbhost=${WORDPRESS_DBHOST} --dbprefix=wp_ --dbcharset=utf8
 $WP_CLI_CMD db drop --yes || true
@@ -64,10 +67,8 @@ $WP_CLI_CMD post delete 1 2
 $WP_CLI_CMD import --authors=create ${WORDPRESS_HOME}/specificationbyexampleworkshop.wordpress.xml
 EOF
 
-popd
-
 echo "Setup Apache2 ..."
-cp -f wordpress.conf /etc/apache2/sites-available/
+cp -f "$(dirname $0)/wordpress.conf" /etc/apache2/sites-available/
 a2dissite 000-default
 a2ensite wordpress.conf
 a2enmod rewrite
