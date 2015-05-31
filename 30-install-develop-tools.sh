@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install git
+LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install git vim
 
 cat > /etc/profile.d/git-aliases.sh <<EOF
 alias g=git
