@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install git vim
+LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install git vim tree
 
 cat > /etc/profile.d/editor.sh <<EOF
 export EDITOR=vim
