@@ -15,9 +15,8 @@ su -lc /bin/bash pi <<EOF
   grep '.rvm/scripts/rvm' \$HOME/.bashrc || echo '[[ -s "\$HOME/.rvm/scripts/rvm" ]] && source "\$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> \$HOME/.bashrc
   rvm list | fgrep $RUBY_VERSION || LC_ALL=C DEBIAN_FRONTEND=noninteractive rvm --quiet-curl install $RUBY_VERSION
   rvm use $RUBY_VERSION --default
-  grep ^gem: \$HOME/.gemrc || ( echo 'gem: --no-rdoc --no-ri' | tee -a \$HOME/.gemrc )
   gem sources --remove https://rubygems.org/
   gem sources -a https://ruby.taobao.org/
   gem sources --list
-  gem install cucumber capybara capybara-mechanize rspec
+  gem install --no-rdoc --no-ri --verbose cucumber capybara capybara-mechanize rspec
 EOF
