@@ -64,7 +64,7 @@ else
 fi
 $WP_CLI_CMD theme activate twentyfourteen
 $WP_CLI_CMD post delete 1 2
-$WP_CLI_CMD import --authors=create ${WORDPRESS_HOME}/specificationbyexampleworkshop.wordpress.xml
+$WP_CLI_CMD import --authors=create $(dirname $0)/specificationbyexampleworkshop.wordpress.xml
 EOF
 
 echo "Setup Apache2 ..."
