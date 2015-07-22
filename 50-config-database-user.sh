@@ -17,7 +17,7 @@ echo "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};" | mysql -uroot
 echo 'CREATE DATABASE /*!32312 IF NOT EXISTS*/' "\`${MYSQL_DATABASE}\`" '/*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;' | mysql -uroot
 
 echo "Import data ..."
-ls /vagrant/sql/*.sql 2>&1 1>/dev/null && for SQLFILE in /vagrant/sql/*.sql; do
+ls /vagrant/sql/*.sql 1>/dev/null 2>&1 && for SQLFILE in /vagrant/sql/*.sql; do
     echo "  Importing ${SQLFILE} ..."
     mysql -u$MYSQL_USERNAME -p$MYSQL_PASSWORD $MYSQL_DATABASE < "$SQLFILE"
 done
