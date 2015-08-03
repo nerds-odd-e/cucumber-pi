@@ -16,16 +16,21 @@ set -e
 ## /dev/mmcblk0p1            8192      122879       57344    c  W95 FAT32 (LBA)
 ## /dev/mmcblk0p2          122880     6399999     3138560   83  Linux
 
+PARTITION_ID=2
+SEC_START=122880
+SEC_END=8160256
+
+RESIZED_FLAG="/.mmcblk0_resized_${PARTITION_ID}_${SEC_START}_${SEC_END}"
 resize_mmcblk0_and_reboot() {
     set +e
     fdisk /dev/mmcblk0 <<EOF
 d
-2
+$PARTITION_ID
 n
 p
-2
-122880
-8160256
+$PARTITION_ID
+$SEC_START
+$SEC_END
 w
 EOF
     set -e
@@ -39,11 +44,11 @@ EOF
     reboot
 }
 
-if [[ ! -e /.mmcblk0_resized ]]; then
+if [[ ! -e "$RESIZED_FLAG" ]]; then
     if [[ -e /.mmcblk0_resized_step1 ]]; then
-        resize2fs /dev/mmcblk0p2
+        resize2fs "/dev/mmcblk0p${PARTITION_ID}"
         rm /.mmcblk0_resized_step1
-        touch /.mmcblk0_resized
+        touch "$RESIZED_FLAG"
         reboot
         exit 1
     else
