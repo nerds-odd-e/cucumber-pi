@@ -37,7 +37,7 @@ EOF
     cd "$(dirname "$0")"
     sed -i -e '/^exit 0$/d' /etc/rc.local
     cat >> /etc/rc.local <<EOF
-echo cucumber-pi step1; cd "$(pwd)"; nohup bash ./bootstrap.sh >/dev/null & || true
+echo cucumber-pi step1; cd "$(pwd)"; nohup bash ./bootstrap.sh >/dev/null || true &
 exit 0
 EOF
     touch /.mmcblk0_resized_step1
