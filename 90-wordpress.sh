@@ -159,3 +159,5 @@ $WP_CLI_CMD post update 1 6 7 8 9 --comment_status=closed
 $WP_CLI_CMD post update 1 6 7 8 9 --ping_status=closed
 
 EOF
+
+sed -e '/^exit 0/c\/usr\/bin\/wordpress_switch_to_ip 1>\/dev\/null 2>&1 || true\n\nexit 0' /etc/rc.local
