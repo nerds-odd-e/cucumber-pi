@@ -20,3 +20,7 @@ su -lc /bin/bash pi <<EOF
   gem sources --list
   gem install --no-rdoc --no-ri --verbose cucumber capybara capybara-mechanize rspec
 EOF
+
+cat > /etc/profile.d/cucumber.sh <<EOF
+alias capybara-gen=/usr/local/cucumber-pi/capybara-gen
+EOF
