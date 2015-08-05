@@ -67,7 +67,7 @@ $WP_CLI_CMD post delete 1 2
 $WP_CLI_CMD import --authors=create $(dirname $0)/specificationbyexampleworkshop.wordpress.xml
 EOF
 
-rm /var/www/index.html
+rm -f /var/www/index.html
 
 echo "Setup Apache2 ..."
 cp -f "$(dirname $0)/wordpress.conf" /etc/apache2/sites-available/
