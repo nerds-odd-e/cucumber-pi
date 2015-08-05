@@ -1,4 +1,14 @@
 #!/bin/bash
 set -e
 
-echo | tee /etc/motd
+cat > /etc/motd <<EOF
+ _______________________________
+( Welcome to Odd-e ATDD course! )
+ -------------------------------
+        o   ^__^
+         o  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+EOF
