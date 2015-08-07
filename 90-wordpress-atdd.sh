@@ -39,17 +39,17 @@ add_atdd_script tianjiayonghu <<EOF
 set -e
 WPUSER="\$1"
 WPUSERROLE="\${2:-subscriber}"
-WPUSERPASSWD="\${WPUSER}1234"
+WPUSERPASSWD="\${3:-\${WPUSER}1234}"
 if [[ -z "\$WPUSER" ]]; then
     echo "Usage:"
-    echo "    \$(basename "\$0") username [subscriber|contributor|author|editor|administrator]"
+    echo "    \$(basename "\$0") username [subscriber|contributor|author|editor|administrator] [password]"
     exit 1
 fi
 
 wp user create "\$WPUSER" "\$WPUSER"@example.com --role="\${WPUSERROLE}" --user_pass="\$WPUSERPASSWD"
 echo "  Username: \$WPUSER"
-echo "  Password: \$WPUSERPASSWD"
 echo "      Role: \$WPUSERROLE"
+echo "  Password: \$WPUSERPASSWD"
 EOF
 
 add_atdd_script xinzengbianjiyonghu <<EOF
