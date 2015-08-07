@@ -148,7 +148,7 @@ $WP_CLI_CMD option update home    '\$WORDPRESS_URL'
 $WP_CLI_CMD option update default_comment_status closed
 $WP_CLI_CMD option update default_ping_status closed
 $WP_CLI_CMD option update default_pingback_flag ''
-$WP_CLI_CMD option update comment_registration  1
+$WP_CLI_CMD option update comment_registration  0
 $WP_CLI_CMD option update comment_moderation    ''
 $WP_CLI_CMD option update comment_whitelist     ''
 $WP_CLI_CMD option update comments_notify   ''
