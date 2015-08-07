@@ -46,3 +46,16 @@ fi
 
 wp user create "$WPUSER" "$WPUSER"@example.com --role=editor --user_pass="$WPUSER"1234
 EOF
+
+add_atdd_script shanchuyonghu <<EOF
+#!/bin/bash
+set -e
+WPUSER="$1"
+if [[ -z "\$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    \$(basename "\$0") username"
+    exit 1
+fi
+
+wp user delete "$WPUSER" --yes
+EOF
