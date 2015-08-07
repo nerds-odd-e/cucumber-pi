@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 function add_atdd_script() {
     ATDD_SCRIPT_NAME="$1"
@@ -34,28 +34,45 @@ fi
 wp comment delete \$(wp comment list --format=ids --author_email="\$1") --force
 EOF
 
+add_atdd_script tianjiayonghu <<EOF
+#!/bin/bash
+set -e
+WPUSER="\$1"
+WPUSERROLE="\${2:-subscriber}"
+WPUSERPASSWD="\${WPUSER}1234"
+if [[ -z "\$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    \$(basename "\$0") username [subscriber|contributor|author|editor|administrator]"
+    exit 1
+fi
+
+wp user create "\$WPUSER" "\$WPUSER"@example.com --role="\${WPUSERROLE}" --user_pass="\$WPUSERPASSWD"
+echo "  Username: \$WPUSER"
+echo "  Password: \$WPUSERPASSWD"
+echo "      Role: \$WPUSERROLE"
+EOF
+
 add_atdd_script xinzengbianjiyonghu <<EOF
 #!/bin/bash
 set -e
-WPUSER="$1"
+WPUSER="\$1"
 if [[ -z "\$WPUSER" ]]; then
     echo "Usage:"
     echo "    \$(basename "\$0") username"
     exit 1
 fi
-
-wp user create "$WPUSER" "$WPUSER"@example.com --role=editor --user_pass="$WPUSER"1234
+tianjiayonghu "\${WPUSER}" editor
 EOF
 
 add_atdd_script shanchuyonghu <<EOF
 #!/bin/bash
 set -e
-WPUSER="$1"
+WPUSER="\$1"
 if [[ -z "\$WPUSER" ]]; then
     echo "Usage:"
     echo "    \$(basename "\$0") username"
     exit 1
 fi
 
-wp user delete "$WPUSER" --yes
+wp user delete "\$WPUSER" --yes
 EOF
