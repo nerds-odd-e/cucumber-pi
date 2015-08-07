@@ -26,6 +26,9 @@ EOF
 add_atdd_script shanchupinglun <<EOF
 #!/bin/bash
 set -e
-[[ -z "\$1" ]] && exit 1
+if [[ -z "\$1" ]]; then
+    echo \$(basename "\$0") user@example.com
+    exit 1
+fi
 wp comment delete \$(wp comment list --format=ids --author_email="\$1") --force
 EOF
