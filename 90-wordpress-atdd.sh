@@ -1,10 +1,24 @@
 #!/bin/bash
+set -ex
 
-cat > /usr/bin/keyipinglun <<EOF
+function add_atdd_script() {
+    ATDD_SCRIPT_NAME="$1"
+
+    cat > /usr/bin/"$ATDD_SCRIPT_NAME"
+
+    chmod +x /usr/bin/"$ATDD_SCRIPT_NAME"
+}
+
+add_atdd_script keyipinglun <<EOF
 #!/bin/bash
 set -ex
 
 wp option set default_comment_status open
 EOF
 
-chmod +x /usr/bin/keyipinglun
+add_atdd_script jinzhipinglun <<EOF
+#!/bin/bash
+set -ex
+
+wp option set default_comment_status closed
+EOF
