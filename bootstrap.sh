@@ -8,3 +8,4 @@ for SC in ??-*.sh; do
     echo "Executing $SC ..."
     sudo bash -e "$SCRIPT_PWD/$SC"
 done
+sudo bash -e cleanup.sh
