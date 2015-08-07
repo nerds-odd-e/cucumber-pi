@@ -33,3 +33,16 @@ if [[ -z "\$1" ]]; then
 fi
 wp comment delete \$(wp comment list --format=ids --author_email="\$1") --force
 EOF
+
+add_atdd_script xinzengbianjiyonghu <<EOF
+#!/bin/bash
+set -e
+WPUSER="$1"
+if [[ -z "\$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    \$(basename "\$0") username"
+    exit 1
+fi
+
+wp user create "$WPUSER" "$WPUSER"@example.com --role=editor --user_pass="$WPUSER"1234
+EOF
