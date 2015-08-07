@@ -76,3 +76,17 @@ fi
 
 wp user delete "\$WPUSER" --yes
 EOF
+
+add_atdd_script xiugaimima <<EOF
+#!/bin/bash
+set -e
+WPUSER="\$1"
+WPUSERPASSWD="\${2:-\${WPUSER}1234}"
+if [[ -z "\$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    \$(basename "\$0") username [new_password]"
+    exit 1
+fi
+
+wp user update "\$WPUSER" --user_pass="\$WPUSERPASSWD"
+EOF
