@@ -154,7 +154,7 @@ $WP_CLI_CMD option update comment_whitelist     ''
 $WP_CLI_CMD option update comments_notify   ''
 $WP_CLI_CMD option update moderation_notify ''
 $WP_CLI_CMD option update show_avatars      ''
-$WP_CLI_CMD option update permalink_structure  "/%postname%/"
+$WP_CLI_CMD option update permalink_structure  ""
 $WP_CLI_CMD post update 1 6 7 8 9 --comment_status=closed
 $WP_CLI_CMD post update 1 6 7 8 9 --ping_status=closed
 
