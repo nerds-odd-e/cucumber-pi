@@ -22,3 +22,10 @@ set -ex
 wp post update 1 6 7 8 9 --comment_status=closed
 wp option set default_comment_status closed
 EOF
+
+add_atdd_script shanchupinglun <<EOF
+#!/bin/bash
+set -e
+[[ -z "$1" ]] && exit 1
+wp comment delete $(wp comment list --format=ids --author_email="$1") --force
+EOF
