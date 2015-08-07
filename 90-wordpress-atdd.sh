@@ -12,13 +12,13 @@ function add_atdd_script() {
 add_atdd_script keyipinglun <<EOF
 #!/bin/bash
 set -ex
-
+wp post update 1 6 7 8 9 --comment_status=open
 wp option set default_comment_status open
 EOF
 
 add_atdd_script jinzhipinglun <<EOF
 #!/bin/bash
 set -ex
-
+wp post update 1 6 7 8 9 --comment_status=closed
 wp option set default_comment_status closed
 EOF
