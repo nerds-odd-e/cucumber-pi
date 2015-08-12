@@ -1,4 +1,4 @@
-path: /var/www
+path: {{ wordpress_wwwroot }}
 color: false
 core config:
     dbuser: root

@@ -17,22 +17,22 @@
   apt: name=php5,php5-mysql
 
 - name: 'MySQL DB for WordPress'
-  mysql_db: name=wordpress encoding=utf8 collation=utf8_bin
+  mysql_db: name={{ wordpress_mysql_database }} encoding=utf8 collation=utf8_bin
 
 - name: 'MySQL user for WordPress'
-  mysql_user: name=wordpress password=wordpress priv=*.*:ALL state=present
+  mysql_user: name={{ wordpress_mysql_username }} password={{ wordpress_mysql_password }} priv=*.*:ALL state=present
 
 - name: 'Ensure /opt/wp-cli exist'
-  file: path=/opt/wp-cli state=directory
+  file: path={{ wp_cli_home }} state=directory
 
 - name: 'Install WordPress command line tool'
-  get_url: dest=/opt/wp-cli/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  get_url: dest={{ wp_cli_home }}/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 - name: 'Make wp executable'
-  file: path=/opt/wp-cli/wp mode=a+x
+  file: path={{ wp_cli_home }}/wp mode=a+x
 
 - name: 'WordPress command line tool config file'
-  copy: src=wp-cli-config.yml dest=/opt/wp-cli/config.yml
+  template: src=wp-cli-config.yml dest={{ wp_cli_home }}/config.yml
 
 - name: 'WordPress command line tool profile'
-  copy: src=wp-cli.sh dest=/etc/profile.d/
+  template: src=wp-cli.sh dest=/etc/profile.d/
