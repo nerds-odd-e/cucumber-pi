@@ -1,0 +1,38 @@
+---
+- name: 'Install Apache httpd'
+  apt: name=apache2
+
+- name: 'Install MySQL server'
+  apt: name={{ item }}
+  with_items:
+    - python-mysqldb
+    - mysql-server
+  register: mysql_server
+
+- name: 'Change MySQL configuration'
+  shell: sed -i.orig "/bind-address/cbind-address = 0.0.0.0" /etc/mysql/my.cnf
+  when: mysql_server|changed
+
+- name: 'Install PHP'
+  apt: name=php5,php5-mysql
+
+- name: 'MySQL DB for WordPress'
+  mysql_db: name=wordpress encoding=utf8 collation=utf8_bin
+
+- name: 'MySQL user for WordPress'
+  mysql_user: name=wordpress password=wordpress priv=*.*:ALL state=present
+
+- name: 'Ensure /opt/wp-cli exist'
+  file: path=/opt/wp-cli state=directory
+
+- name: 'Install WordPress command line tool'
+  get_url: dest=/opt/wp-cli/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+- name: 'Make wp executable'
+  file: path=/opt/wp-cli/wp mode=a+x
+
+- name: 'WordPress command line tool config file'
+  copy: src=wp-cli-config.yml dest=/opt/wp-cli/config.yml
+
+- name: 'WordPress command line tool profile'
+  copy: src=wp-cli.sh dest=/etc/profile.d/
