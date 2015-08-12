@@ -18,3 +18,14 @@
 
 - name: 'zh_CN Locale'
   locale_gen: name=zh_CN.UTF-8
+
+- name: 'en_US Locale'
+  locale_gen: name=en_US.UTF-8
+
+- name: 'Hostname'
+  hostname: name=odd-pi.local
+  register: hostname_changed
+
+- name: 'Hosts file'
+  copy: src=hosts dest=/etc/hosts mode=u+rw,go+r
+  when: hostname_changed|changed
