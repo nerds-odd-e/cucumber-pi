@@ -1,0 +1,17 @@
+---
+- name: 'Configure WIFI'
+  copy: src=./wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
+  register: wpa_supplicant
+
+- name: 'Update system packages'
+  action: apt upgrade=safe update_cache=yes cache_valid_time=86400
+
+- name: 'Reboot'
+  command: /sbin/reboot -t now
+  when: wpa_supplicant|changed
+
+- name: 'dot SSH directory'
+  file: path=/home/pi/.ssh state=directory owner=pi group=pi mode=u+rwx,go-rwx
+
+- name: 'SSH public key'
+  copy: src=authorized_keys dest=/home/pi/.ssh/authorized_keys owner=pi group=pi mode=u+rw,go-rwx
