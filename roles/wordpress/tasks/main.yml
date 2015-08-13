@@ -36,3 +36,16 @@
 
 - name: 'WordPress command line tool profile'
   template: src=wp-cli.sh dest=/etc/profile.d/
+
+- name: 'Copy WordPress for Odd-e data file'
+  copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
+
+- name: 'Copy install wordpress script'
+  template: src=install_wordpress.sh dest={{ wp_cli_home }}
+
+- name: 'WordPress wwwroot directory'
+  file: path={{ wordpress_wwwroot }} state=directory owner=www-data group=www-data
+
+- name: 'Install WordPress using wp-cli'
+  shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" www-data
+         creates={{ wordpress_wwwroot }}/wp-config.php
