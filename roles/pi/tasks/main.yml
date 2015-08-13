@@ -20,9 +20,7 @@
   locale_gen: name=en_US.UTF-8
 
 - name: 'Hostname'
-  hostname: name=odd-pi.local
-  register: hostname_changed
+  hostname: name={{ hostname }}.local
 
 - name: 'Hosts file'
-  copy: src=hosts dest=/etc/hosts mode=u+rw,go+r
-  when: hostname_changed|changed
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }} {{ hostname }}.local'
