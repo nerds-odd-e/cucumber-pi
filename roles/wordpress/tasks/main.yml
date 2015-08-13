@@ -52,3 +52,9 @@
 
 - name: 'Update system motd'
   template: src=motd dest=/etc/motd
+
+- name: 'ensure wordpress utils exist'
+  template: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - wordpress_switch_to_url
+    - wordpress_switch_to_ip

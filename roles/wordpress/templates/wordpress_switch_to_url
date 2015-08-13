@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+WORDPRESS_URL="${1:-http://$(hostname --long)}"
+
+WP_CLI_CMD=wp
+WP_CLI_OPTS=(--allow-root --path={{ wordpress_wwwroot }})
+
+[[ "$WORDPRESS_URL" == "$($WP_CLI_CMD $WP_CLI_OPTS option get siteurl)" ]] \
+&& [[ "$($WP_CLI_CMD $WP_CLI_OPTS option get siteurl)" == "$($WP_CLI_CMD $WP_CLI_OPTS option get home)" ]] \
+&& exit 0
+
+"$WP_CLI_CMD" "${WP_CLI_OPTS[@]}" option update siteurl "$WORDPRESS_URL" 1>/dev/null 2>&1
+"$WP_CLI_CMD" "${WP_CLI_OPTS[@]}" option update home    "$WORDPRESS_URL" 1>/dev/null 2>&1
+
+sudo sed -i -e "/URL:/{a\ \ \ \ URL: ${WORDPRESS_URL}
+;d}" /etc/motd
+
+echo "${WORDPRESS_URL}"
