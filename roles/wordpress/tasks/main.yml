@@ -58,3 +58,6 @@
   with_items:
     - wordpress_switch_to_url
     - wordpress_switch_to_ip
+
+- name: 'ensure wordpress switch to ip at boot'
+  lineinfile: dest=/etc/rc.local insertbefore='^exit 0$' line='/usr/bin/wordpress_switch_to_ip || true'
