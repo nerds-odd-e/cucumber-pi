@@ -23,4 +23,4 @@
   hostname: name={{ hostname }}.local
 
 - name: 'Hosts file'
-  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }} {{ hostname }}.local'
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }}.local {{ hostname }}'
