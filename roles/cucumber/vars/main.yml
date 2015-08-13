@@ -1,0 +1,2 @@
+user: pi
+user_home: /home/{{ user }}

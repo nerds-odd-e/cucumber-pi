@@ -6,5 +6,6 @@
   roles:
     - pi
     - wordpress
+    - cucumber
   remote_user: pi
   sudo: yes
