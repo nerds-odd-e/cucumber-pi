@@ -49,3 +49,6 @@
 - name: 'Install WordPress using wp-cli'
   shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" www-data
          creates={{ wordpress_wwwroot }}/wp-config.php
+
+- name: 'Update system motd'
+  template: src=motd dest=/etc/motd

@@ -1,0 +1,32 @@
+ ______________________________
+< Welcome to Odd-e ATDD course >
+ ------------------------------
+   \         __------~~-,
+    \      ,'            ,
+          /               \
+         /                :
+        |                  '
+        |                  |
+        |                  |
+         |   _--           |
+         _| =-.     .-.   ||
+         o|/o/       _.   |
+         /  ~          \ |
+       (____@)  ___~    |
+          |_===~~~.`    |
+       _______.--~     |
+       \________       |
+                \      |
+              __/-___-- -__
+             /            _ \
+
+MySQL:
+    Database: {{ wordpress_mysql_database }}
+    Username: {{ wordpress_mysql_username }}
+    Password: {{ wordpress_mysql_password }}
+
+WordPress:
+    URL: http://wordpress.local
+    Username: odd-e
+    Passowrd: s3cr3t
+--
