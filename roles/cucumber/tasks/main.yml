@@ -3,3 +3,18 @@
   shell: su -lc 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 && curl -sSL https://get.rvm.io | bash -s stable' {{ user }}
   args:
     creates: "{{ user_home }}/.rvm/scripts/rvm"
+
+- name: 'JRuby'
+  shell: su -lc '
+      rvm install jruby-{{ jruby_version }}
+    ' {{ user }}
+  args:
+    creates: "{{ user_home }}/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
+
+- name: 'Cucumber/Swinger for JRuby'
+  shell: su -lc '
+      jruby -S gem install cucumber rake rspec rspec-matchers-matchers &&
+      jruby -S gem install --version 0.0.3 swinger
+    ' {{ user }}
+  args:
+    creates: "{{ user_home }}/.rvm/gems/jruby-{{ jruby_version }}/gems/swinger-0.0.3"
