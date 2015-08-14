@@ -1,4 +1,21 @@
 ---
+- name: 'Resize SD card'
+  script: resize_sdcard.sh creates=/.mmcblk0_resized
+  async: 0
+  poll: 0
+  ignore_errors: true
+  register: reboot_required
+
+- name: 'pause for reboot'
+  sudo: no
+  pause: seconds=30
+  when: reboot_required|changed
+
+- name: 'wait for reboot'
+  sudo: no
+  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=60
+  when: reboot_required|changed
+
 - name: 'Configure WIFI'
   copy: src=./wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
   register: wpa_supplicant
