@@ -1,0 +1,2 @@
+EDITOR=jed
+export EDITOR
