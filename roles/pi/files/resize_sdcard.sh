@@ -18,18 +18,20 @@ set -e
 
 ## 6399999 - 122880 + 1 = 6277120
 ## 6277120 * 1.3 + 122880 - 1 = 8283135
+## 6277120 * 1.35 + 122880 - 1 = 8596991
+## 6277120 * 1.4 + 122880 - 1 = 8910847
 
 touch /var/log/resize2fs_start
 
 DISK_DEV=mmcblk0
 PART_NUM=2
 PART_START=122880
-PART_END=8283135
+PART_END=$(printf "%d" $(expr 6399999 + 627712 '*' 4))
 
 CURRENT_PART_END=$(fdisk -l "/dev/$DISK_DEV" | fgrep "${DISK_DEV}p${PART_NUM}" | awk '{print $3}')
 
 if [[ "$CURRENT_PART_END" -ge "$PART_END" ]]; then
-    echo "That's OK! $CURRENT_PART_END >= $PART_END!"
+    echo "That's OK! $CURRENT_PART_END >= ${PART_END}!"
     exit 0
 fi
 
@@ -71,7 +73,7 @@ case "$1" in
     update-rc.d resize2fs_once remove &&
     log_end_msg $?
     touch /var/log/resize2fs_end
-    touch /.mmcblk0_resized
+    echo "$PART_START $PART_END" > /.mmcblk0_resized
     ;;
   *)
     echo "Usage: $0 start" >&2
