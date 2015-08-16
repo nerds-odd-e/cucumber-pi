@@ -1,0 +1,40 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          xvfb_99
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5 S
+# Default-Stop:
+# Short-Description: Start virtual X frame buffer
+# Description:
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+RUN_AS_USER=pi
+DISPLAY_ID=99
+
+XVFB=/usr/bin/Xvfb
+XVFBARGS=":$DISPLAY_ID -screen 0 1200x900x24 -ac"
+PIDFILE="/var/run/xvfb_${DISPLAY_ID}.pid"
+case "$1" in
+  start)
+    echo -n "Starting virtual X frame buffer: Xvfb"
+    start-stop-daemon --chuid "$RUN_AS_USER" --start --quiet --pidfile $PIDFILE --make-pidfile --background --exec $XVFB -- $XVFBARGS
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping virtual X frame buffer: Xvfb"
+    start-stop-daemon --chuid "$RUN_AS_USER" --stop --quiet --pidfile $PIDFILE
+    echo "."
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit 0

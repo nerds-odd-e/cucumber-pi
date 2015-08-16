@@ -18,3 +18,12 @@
     ' {{ user }}
   args:
     creates: "{{ user_home }}/.rvm/gems/jruby-{{ jruby_version }}/gems/swinger-0.0.3"
+
+- name: 'virtual framebuffer X server for X'
+  apt: name=xvfb
+
+- name: 'Xvfb service script'
+  copy: src=xvfb_99 dest=/etc/init.d mode=a+x
+
+- name: 'Enable Xvfb service'
+  service: name=xvfb_99 enabled=yes
