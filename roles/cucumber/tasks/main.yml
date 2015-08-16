@@ -27,6 +27,18 @@
     executable: /bin/bash
   sudo_user: "{{ user }} -i"
 
+- name: 'cucumber-pi folder'
+  file: path=/usr/local/cucumber-pi state=directory mode=a+rx,u+w
+
+- name: 'capybara-gen'
+  copy: src=capybara-gen dest=/usr/local/cucumber-pi mode=a+rx
+
+- name: 'capybara-gen archive source'
+  copy: src=empty_feature.tgz dest=/usr/local/cucumber-pi
+
+- name: 'alias for capybara-gen'
+  copy: src=cucumber.sh dest=/etc/profile.d/
+
 - name: 'JRuby'
   shell: 'rvm install jruby-{{ jruby_version }}'
   args:
