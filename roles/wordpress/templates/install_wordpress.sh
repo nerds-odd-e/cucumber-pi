@@ -53,4 +53,7 @@ $WP_CLI_CMD option update permalink_structure  "/%postname%/"
 $WP_CLI_CMD post update 1 6 7 8 9 --comment_status=closed
 $WP_CLI_CMD post update 1 6 7 8 9 --ping_status=closed
 
+a2enmod rewrite
+service apache2 restart
+
 touch "${WORDPRESS_HOME}/odd-e.txt"
