@@ -35,6 +35,8 @@ $WP_CLI_CMD core update-db
 $WP_CLI_CMD plugin update --all || true
 $WP_CLI_CMD theme  update --all || true
 
+$WP_CLI_CMD plugin install disable-google-fonts --activate
+
 $WP_CLI_CMD user create tom tom@chaifeng.com --role=editor --user_pass=s3cr3t --first_name=Tom
 $WP_CLI_CMD user create marry marry@chaifeng.com --role=subscriber --user_pass=s3cr3t --first_name=Marry
 
