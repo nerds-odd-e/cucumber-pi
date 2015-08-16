@@ -1,4 +1,6 @@
-wordpress_wwwroot: /var/www/wordpress
+wordpress_wwwroot: /var/www
+
+wordpress_install_user: pi
 
 wordpress_mysql_hostname: 127.0.0.1
 wordpress_mysql_database: wordpress
