@@ -59,6 +59,9 @@
   shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" {{ wordpress_install_user }}
          creates={{ wordpress_wwwroot }}/odd-e.txt
 
+- name:  'enables the Apache2 module "rewrite"'
+  apache2_module: state=present name=rewrite
+
 - name: '.htaccess for WordPress'
   copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w
 
