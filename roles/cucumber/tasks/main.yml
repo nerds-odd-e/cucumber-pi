@@ -37,7 +37,7 @@
   copy: src=empty_feature.tgz dest=/usr/local/cucumber-pi
 
 - name: 'alias for capybara-gen'
-  copy: src=cucumber.sh dest=/etc/profile.d/
+  copy: src=profile.d/cucumber.sh dest=/etc/profile.d/
 
 - name: 'JRuby'
   shell: 'rvm install jruby-{{ jruby_version }}'
@@ -64,3 +64,6 @@
 
 - name: 'Enable Xvfb service'
   service: name=xvfb_99 enabled=yes
+
+- name: 'export DISPLAY environment'
+  copy: src=profile.d/xvfb.sh dest=/etc/profile.d/
