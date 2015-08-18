@@ -32,6 +32,7 @@ CURRENT_PART_END=$(fdisk -l "/dev/$DISK_DEV" | fgrep "${DISK_DEV}p${PART_NUM}" |
 
 if [[ "$CURRENT_PART_END" -ge "$PART_END" ]]; then
     echo "That's OK! $CURRENT_PART_END >= ${PART_END}!"
+    fdisk -l "/dev/${DISK_DEV}" | grep -F "/dev/${DISK_DEV}p${PART_NUM}" | awk '{print $2, $3}' > /.mmcblk0_resized
     exit 0
 fi
 
