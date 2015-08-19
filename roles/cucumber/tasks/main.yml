@@ -55,15 +55,3 @@
     creates: "{{ user_home }}/.rvm/gems/jruby-{{ jruby_version }}/gems/swinger-0.0.3"
     executable: /bin/bash
   sudo_user: "{{ user }} -i"
-
-- name: 'virtual framebuffer X server for X'
-  apt: name=xvfb
-
-- name: 'Xvfb service script'
-  copy: src=xvfb_99 dest=/etc/init.d mode=a+x
-
-- name: 'Enable Xvfb service'
-  service: name=xvfb_99 enabled=yes
-
-- name: 'export DISPLAY environment'
-  copy: src=profile.d/xvfb.sh dest=/etc/profile.d/

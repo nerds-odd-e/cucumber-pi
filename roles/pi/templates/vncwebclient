@@ -14,7 +14,7 @@
 set -e
 
 RUN_AS_USER=pi
-VNC_DISPLAY_ID=9
+VNC_DISPLAY_ID={{ vnc_display_id }}
 
 VNCSERVER=/usr/bin/vncserver
 VNCSERVER_ARGS=":$VNC_DISPLAY_ID -geometry 1024x768"
