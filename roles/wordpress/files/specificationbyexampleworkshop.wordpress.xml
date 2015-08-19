@@ -44,11 +44,49 @@
 </wp:category>
 <generator>http://wordpress.org/?v=4.2.2</generator>
 <item>
+  <title>Reference</title>
+  <link>http://wordpress.local/?p=5</link>
+  <pubDate>Tue, 18 Aug 2015 10:01:57 +0000</pubDate>
+  <dc:creator>odd-e</dc:creator>
+  <guid isPermaLink="false">http://wordpress.local/?p=5</guid>
+  <description/>
+  <content:encoded><![CDATA[How to use Jed?
+<pre>| Key           | Action              |
+|---------------|---------------------|
+| Ctrl-x Ctrl-s | Save                |
+| Ctrl-x Ctrl-c | Exit Jed            |
+| Ctrl-a        | Go to start of line |
+| Ctrl-e        | Go to end of line   |
+| Ctrl-k        | Kill to end of line |
+| Ctrl-_        | Undo                |
+</pre>
+
+Useful links:
+
+<a href="/vnc">Access Desktop</a>]]>
+
+</content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>5</wp:post_id>
+  <wp:post_date>2014-03-15 11:22:33</wp:post_date>
+  <wp:post_date_gmt>2014-03-15 11:22:33</wp:post_date_gmt>
+  <wp:comment_status>closed</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name>reference</wp:post_name>
+  <wp:status>publish</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>post</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+  <category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
+</item>
+<item>
   <title>Odd-e In Action: Certified Scrum Developer Course</title>
-  <link>http://wordpress.local/?p=4</link>
+  <link>http://wordpress.local/?p=6</link>
   <pubDate>Sun, 14 Dec 2014 09:37:39 +0000</pubDate>
   <dc:creator>odd-e</dc:creator>
-  <guid isPermaLink="false">http://wordpress.local/?p=4</guid>
+  <guid isPermaLink="false">http://wordpress.local/?p=6</guid>
   <description/>
   <content:encoded><![CDATA[An action-packed one-week course where participants get a feel of what it is like to be on a Scrum team. Comprises 30% lecture, 70% exercises, we go through Scrum practices as well as effective software engineering techniques useful for those aspiring for product development agility and competency. This structure is also as close to agile coaching as you can get within a one-week training.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -67,10 +105,10 @@
 </item>
 <item>
   <title>Odd-e Coaching</title>
-  <link>http://wordpress.local/?p=6</link>
+  <link>http://wordpress.local/?p=7</link>
   <pubDate>Sun, 14 Dec 2014 09:40:54 +0000</pubDate>
   <dc:creator>odd-e</dc:creator>
-  <guid isPermaLink="false">http://wordpress.local/?p=6</guid>
+  <guid isPermaLink="false">http://wordpress.local/?p=7</guid>
   <description/>
   <content:encoded><![CDATA[Agile Coaching means that an experienced Agile Coach will work closely together with an organization to improve the organizationals product development agility. Agility is a broad term used for the flexibility in product development-- the ability to respond to changes. This flexibility is achieved by shortening feedback loops and focus on improved quality. This faster feedback cycle might also leads to other benefits such as higher productivity.
 
@@ -127,10 +165,10 @@ Odd-e provides coaching for all types of agile coaching (depending on the coach)
 </item>
 <item>
   <title>Learning Objectives</title>
-  <link>http://wordpress.local/?p=10</link>
+  <link>http://wordpress.local/?p=9</link>
   <pubDate>Sun, 14 Dec 2014 09:50:31 +0000</pubDate>
   <dc:creator>odd-e</dc:creator>
-  <guid isPermaLink="false">http://wordpress.local/?p=10</guid>
+  <guid isPermaLink="false">http://wordpress.local/?p=9</guid>
   <description/>
   <content:encoded><![CDATA[By the end of the course you will be able to:
 <ul>
