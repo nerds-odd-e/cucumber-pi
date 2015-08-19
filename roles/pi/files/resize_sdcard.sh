@@ -26,7 +26,7 @@ touch /var/log/resize2fs_start
 DISK_DEV=mmcblk0
 PART_NUM=2
 PART_START=122880
-PART_END=$(printf "%d" $(expr 6399999 + 627712 '*' 4))
+PART_END=$(printf "%d" $(expr 6399999 + 627712 '*' 6))
 
 CURRENT_PART_END=$(fdisk -l "/dev/$DISK_DEV" | fgrep "${DISK_DEV}p${PART_NUM}" | awk '{print $3}')
 
