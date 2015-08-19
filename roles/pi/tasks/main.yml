@@ -57,8 +57,5 @@
 - name: 'enable vnc web client service'
   service: name=vncwebclient enabled=yes
 
-- name: 'ensure vnc web client service started'
-  service: name=vncwebclient state=started
-
 - name: 'use vnc display by default'
   template: src=vnc_display.sh dest=/etc/profile.d/
