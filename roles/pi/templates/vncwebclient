@@ -1,0 +1,59 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          vncwebclient
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5 S
+# Default-Stop:
+# Short-Description: Start vncserver & webclient
+# Description:
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+set -e
+
+RUN_AS_USER=pi
+VNC_DISPLAY_ID=9
+
+VNCSERVER=/usr/bin/vncserver
+VNCSERVER_ARGS=":$VNC_DISPLAY_ID -geometry 1024x768"
+
+case "$1" in
+  start)
+    echo "Starting vncserver"
+    su -c '/bin/bash -l' "$RUN_AS_USER" <<EOF
+      set -e
+
+      cd \$HOME
+      if [[ ! -f .vnc/passwd ]]; then
+        mkdir -p .vnc
+        echo "{{ vnc_passwd }}" | vncpasswd -f > .vnc/passwd
+        chmod go-rwx .vnc/passwd
+      fi
+
+      $VNCSERVER $VNCSERVER_ARGS || exit 0
+
+      cd \$HOME/.vnc
+      exec 1>/dev/null
+      exec 2>/dev/null
+      nohup websockify --web /usr/share/novnc \$(expr 8900 + $VNC_DISPLAY_ID) localhost:\$(expr 5900 + $VNC_DISPLAY_ID) &
+EOF
+    ;;
+  stop)
+    echo "Stopping vncserver & webclient"
+    su -lc /bin/bash "$RUN_AS_USER" <<EOF
+      pgrep -f websockify | xargs --no-run-if-empty kill
+      $VNCSERVER -kill :$VNC_DISPLAY_ID
+EOF
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit 0

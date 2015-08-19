@@ -38,5 +38,21 @@
 - name: 'Hosts file'
   lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }}.local {{ hostname }}'
 
-- name: 'VNC server'
-  apt: name=tightvncserver
+- name: 'VNC server/client'
+  apt: name=tightvncserver,novnc
+
+- name: 'apache default site configuration'
+  template: src=apache2/default dest=/etc/apache2/sites-available/default
+
+- name: 'enable apache default site'
+  file: path=/etc/apache2/sites-enabled/000-default
+        state=link src=../sites-available/default
+
+- name: 'vnc web client service'
+  template: src=vncwebclient dest=/etc/init.d mode=a+x
+
+- name: 'enable vnc web client service'
+  service: name=vncwebclient enabled=yes
+
+- name: 'ensure vnc web client service started'
+  service: name=vncwebclient state=started
