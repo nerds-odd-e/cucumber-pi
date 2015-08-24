@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+WORDPRESS_URL="http://$(hostname --all-ip-addresses | cut -d' ' -f1)/"
+
+wordpress_switch_to_url "$WORDPRESS_URL"

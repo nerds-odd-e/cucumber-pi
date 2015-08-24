@@ -1,0 +1,5 @@
+user: pi
+user_home: /home/{{ user }}
+
+ruby_version: 2.2.1
+jruby_version: 1.7.19

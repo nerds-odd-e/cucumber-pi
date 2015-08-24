@@ -1,0 +1,83 @@
+---
+- name: 'Install Apache httpd'
+  apt: name=apache2
+
+- name: 'Add pi to group www-data'
+  user: name={{ wordpress_install_user }} append=yes groups=www-data
+
+- name: 'Install MySQL server'
+  apt: name={{ item }}
+  with_items:
+    - python-mysqldb
+    - mysql-server
+  register: mysql_server
+
+- name: 'Change MySQL configuration'
+  shell: sed -i.orig "/bind-address/cbind-address = 0.0.0.0" /etc/mysql/my.cnf
+  when: mysql_server|changed
+
+- name: 'Install PHP'
+  apt: name=php5,php5-mysql
+
+- name: 'MySQL DB for WordPress'
+  mysql_db: name={{ wordpress_mysql_database }} encoding=utf8 collation=utf8_bin
+
+- name: 'MySQL user for WordPress'
+  mysql_user: name={{ wordpress_mysql_username }} password={{ wordpress_mysql_password }} priv=*.*:ALL state=present
+
+- name: 'Ensure /opt/wp-cli exist'
+  file: path={{ wp_cli_home }} state=directory
+
+- name: 'Install WordPress command line tool'
+  get_url: dest={{ wp_cli_home }}/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+- name: 'Make wp executable'
+  file: path={{ wp_cli_home }}/wp mode=a+x
+
+- name: 'WordPress command line tool config file'
+  template: src=wp-cli-config.yml dest={{ wp_cli_home }}/config.yml
+
+- name: 'WordPress command line tool profile'
+  template: src=wp-cli.sh dest=/etc/profile.d/
+
+- name: 'Copy WordPress for Odd-e data file'
+  copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
+
+- name: 'ensure wordpress utils exist'
+  template: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - wordpress_switch_to_url
+    - wordpress_switch_to_ip
+
+- name: 'Copy install wordpress script'
+  template: src=install_wordpress.sh dest={{ wp_cli_home }}
+
+- name: 'WordPress wwwroot directory'
+  file: path={{ wordpress_wwwroot }} state=directory owner=www-data group=www-data mode=ug+rwx,o-w
+
+- name: 'Install WordPress using wp-cli'
+  shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" {{ wordpress_install_user }}
+         creates={{ wordpress_wwwroot }}/odd-e.txt
+
+- name:  'enables the Apache2 module "rewrite"'
+  apache2_module: state=present name=rewrite
+
+- name: '.htaccess for WordPress'
+  copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w
+
+- name: 'Update system motd'
+  template: src=motd dest=/etc/motd
+
+- name: 'ensure wordpress switch to ip at boot'
+  lineinfile: dest=/etc/rc.local insertbefore='^exit 0$' line='su -lc /usr/bin/wordpress_switch_to_ip {{ wordpress_install_user }} || true'
+
+- name: 'scripts for ATDD course'
+  copy: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - jinzhipinglun
+    - keyipinglun
+    - shanchupinglun
+    - shanchuyonghu
+    - tianjiayonghu
+    - xinzengbianjiyonghu
+    - xiugaimima

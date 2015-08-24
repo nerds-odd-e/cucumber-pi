@@ -1,0 +1,3 @@
+hostname: odd-pi
+vnc_passwd: shumeipi
+vnc_display_id: 9

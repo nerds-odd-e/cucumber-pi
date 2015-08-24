@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+WPUSER="$1"
+if [[ -z "$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    $(basename "$0") username"
+    exit 1
+fi
+
+wp user delete "$WPUSER" --yes

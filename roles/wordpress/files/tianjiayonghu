@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+WPUSER="$1"
+WPUSERROLE="${2:-subscriber}"
+WPUSERPASSWD="${3:-${WPUSER}1234}"
+if [[ -z "$WPUSER" ]]; then
+    echo "Usage:"
+    echo "    $(basename "$0") username [subscriber|contributor|author|editor|administrator] [password]"
+    exit 1
+fi
+
+wp user create "$WPUSER" "$WPUSER"@example.com --role="${WPUSERROLE}" --user_pass="$WPUSERPASSWD"
+echo "  Username: $WPUSER"
+echo "      Role: $WPUSERROLE"
+echo "  Password: $WPUSERPASSWD"
+
+echo Done.

@@ -1,0 +1,61 @@
+---
+- name: 'Resize SD card'
+  script: resize_sdcard.sh creates=/.mmcblk0_resized
+  async: 0
+  poll: 0
+  ignore_errors: true
+  register: reboot_required
+
+- name: 'pause for reboot'
+  sudo: no
+  pause: seconds=30
+  when: reboot_required|changed
+
+- name: 'wait for reboot'
+  sudo: no
+  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=60
+  when: reboot_required|changed
+
+- name: 'Configure WIFI'
+  copy: src=./wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
+  register: wpa_supplicant
+
+- name: 'Update system packages cache every 3 days'
+  action: apt update_cache=yes cache_valid_time=259200
+
+- name: 'SSH public key'
+  authorized_key: user={{ item }} key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDtKJbO7d17s72xTSLl6jL11aFvQWyCbwjQ5pZ1LmGRCHcS7iKM3YOV6e+U4eWQICSEkCFelrlxcMywOBRf9LycUoTBZDcrQyg3r91ekc1F4NeUy0KZre021OG89y8byNVPJUKKCCoOSR04A8yjhDlgGXb31QA22vZwr5Bet6D9Sx/LczDZ4IYe0ow2NAsCTHOxukHKBY+PDXVrdwN1wdop+FbmbMYjB/jbmjC2zwpD0JWHn7HidAmexOSrG1N2OWcfjWJbnVVt5y2uWjZTJxFR82Zjz4ZKZlZcEus6HSpxc2qbhhNrwAaP2TpksIqssfRUF6IVFz+xwzJQWiKNBCKN8P/4vHP1OLEc+dvnAwaF2EKkcxs1i6Yt+TrDGKVNqbn7TsKPWedCXveK+S0kAR48pLwmX5kN95of8SMoegjAcp4QP0GKZz6DVvlzUg5uObAQ8l9C5On6LRPQ2Bi6jLMpJDoX5l6jPQHmpFOURts29+s2ZaZcXvmxpXbANaFj8L38IZCv3/46rUcWtBWH1/uXArHTOBwNnA79ZRWljwZA3XnG+vEseU9yytkV+/ggfPn9/NilPZWBOxsbcWLaiQxf3mLinMG0MmOBRWqSH2FYqIHqM1fJutAH5MnWkB/8/IwC4X0mKtAhjTHyp2HVjOT1aVOil2OwjU9paWh0UFhq+Q== chaifeng"
+  with_items:
+    - pi
+    - root
+
+- name: 'zh_CN Locale'
+  locale_gen: name=zh_CN.UTF-8
+
+- name: 'en_US Locale'
+  locale_gen: name=en_US.UTF-8
+
+- name: 'Hostname'
+  hostname: name={{ hostname }}.local
+
+- name: 'Hosts file'
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }}.local {{ hostname }}'
+
+- name: 'VNC server/client'
+  apt: name=tightvncserver,novnc
+
+- name: 'apache default site configuration'
+  template: src=apache2/default dest=/etc/apache2/sites-available/default
+
+- name: 'enable apache default site'
+  file: path=/etc/apache2/sites-enabled/000-default
+        state=link src=../sites-available/default
+
+- name: 'vnc web client service'
+  template: src=vncwebclient dest=/etc/init.d mode=a+x
+
+- name: 'enable vnc web client service'
+  service: name=vncwebclient enabled=yes
+
+- name: 'use vnc display by default'
+  template: src=vnc_display.sh dest=/etc/profile.d/
