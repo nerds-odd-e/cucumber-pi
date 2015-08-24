@@ -1,18 +1,14 @@
 #!/bin/bash
 set -e
 
-HOSTNAME=odd-pi
+HOSTNAME="${1:-odd-pi}"
 
-echo ${HOSTNAME}.local | tee /etc/hostname
-
-_local_hostname() {
-    grep -F "127.0.0.1 ${1}" /etc/hosts || echo "127.0.0.1 ${1}" | tee -a /etc/hosts
+change_hostname() {
+  NEW_HOSTNAME="$1"
+  LOCAL_DOMAIN=local
+  echo $NEW_HOSTNAME > /etc/hostname
+  sed -i -e "/^127\\.0\\.1\\.1/c127.0.1.1\t${NEW_HOSTNAME} ${NEW_HOSTNAME}.${LOCAL_DOMAIN}" /etc/hosts
+  hostname "${HOSTNAME}.${LOCAL_DOMAIN}"
 }
 
-_local_hostname ${HOSTNAME}
-_local_hostname ${HOSTNAME}.local
-_local_hostname example.com
-_local_hostname atdd
-_local_hostname atdd.local
-
-hostname ${HOSTNAME}.local
+change_hostname "$HOSTNAME"
