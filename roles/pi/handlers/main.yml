@@ -1,3 +1,6 @@
+- name: 'update system packages'
+  apt: upgrade=yes
+
 - name: reboot
   shell: reboot
   async: 0
