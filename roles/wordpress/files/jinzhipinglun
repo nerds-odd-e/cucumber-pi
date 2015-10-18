@@ -1,6 +1,6 @@
 #!/bin/bash
-set -ex
-wp post update 1 6 7 8 9 --comment_status=open
-wp option set default_comment_status open
+set -e
+wp post update $(wp post list --post_type=post,page --format=ids) --comment_status=closed
+wp option set default_comment_status closed
 
 echo Done.

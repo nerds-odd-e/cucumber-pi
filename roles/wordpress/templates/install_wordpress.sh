@@ -38,12 +38,12 @@ $WP_CLI_CMD theme  update --all || true
 $WP_CLI_CMD plugin install disable-google-fonts --activate
 
 $WP_CLI_CMD user create tom tom@chaifeng.com --role=editor --user_pass=s3cr3t --first_name=Tom
-$WP_CLI_CMD user create mary mary@chaifeng.com --role=subscriber --user_pass=s3cr3t --first_name=Marry
+$WP_CLI_CMD user create mary mary@chaifeng.com --role=subscriber --user_pass=s3cr3t --first_name=Mary
 
 $WP_CLI_CMD option update default_comment_status closed
 $WP_CLI_CMD option update default_ping_status closed
 $WP_CLI_CMD option update default_pingback_flag ''
-$WP_CLI_CMD option update comment_registration  0
+$WP_CLI_CMD option update comment_registration  1
 $WP_CLI_CMD option update comment_moderation    ''
 $WP_CLI_CMD option update comment_whitelist     ''
 $WP_CLI_CMD option update comments_notify   ''

@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
-wp post update 1 6 7 8 9 --comment_status=open
+wp post update $(wp post list --post_type=post,page --format=ids) --comment_status=open
 wp option set default_comment_status open
 
+cat <<EOF
+
+comment textarea: comment
+   submit button: Post Comment
+
+EOF
 echo Done.
