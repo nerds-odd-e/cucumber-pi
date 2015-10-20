@@ -2,11 +2,16 @@
 set -e
 if [[ -z "$1" ]]; then
     echo "Usage:"
-    echo "    $(basename "$0") user@example.com"
+    echo "    $(basename "$0") <user|user@example.com>"
     exit 1
 fi
 
-COMMENT_IDS="$(wp comment list --format=ids --author_email="$1")"
+AUTHOR_EMAIL="$1"
+if ! echo "$AUTHOR_EMAIL" | grep -F "@" 1>/dev/null 2>&1; then
+    AUTHOR_EMAIL="$1@example.com"
+fi
+
+COMMENT_IDS="$(wp comment list --format=ids --author_email="$AUTHOR_EMAIL")"
 [[ -z "$COMMENT_IDS" ]] || wp comment delete $COMMENT_IDS --force
 
 echo Done.
