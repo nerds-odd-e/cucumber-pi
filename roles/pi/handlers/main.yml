@@ -1,0 +1,19 @@
+- name: 'update system packages'
+  apt: upgrade=yes
+
+- name: reboot
+  shell: reboot
+  async: 0
+  poll: 0
+  ignore_errors: true
+  notify:
+    - 'pause for reboot'
+    - 'wait for reboot'
+
+- name: 'pause for reboot'
+  sudo: no
+  pause: seconds=30
+
+- name: 'wait for reboot'
+  sudo: no
+  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=60

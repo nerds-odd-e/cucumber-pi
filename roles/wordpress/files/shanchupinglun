@@ -5,6 +5,8 @@ if [[ -z "$1" ]]; then
     echo "    $(basename "$0") user@example.com"
     exit 1
 fi
-wp comment delete $(wp comment list --format=ids --author_email="$1") --force
+
+COMMENT_IDS="$(wp comment list --format=ids --author_email="$1")"
+[[ -z "$COMMENT_IDS" ]] || wp comment delete $COMMENT_IDS --force
 
 echo Done.
