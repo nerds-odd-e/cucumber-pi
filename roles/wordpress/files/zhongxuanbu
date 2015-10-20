@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+wp option set comment_moderation 1
+
+echo Done.
