@@ -49,6 +49,19 @@
     - wordpress_switch_to_url
     - wordpress_switch_to_ip
 
+- name: 'scripts for ATDD course'
+  copy: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - jinzhipinglun
+    - keyipinglun
+    - shanchupinglun
+    - shanchuyonghu
+    - tianjiayonghu
+    - xinzengbianjiyonghu
+    - xiugaimima
+    - zhongxuanbu
+    - wordpress_reset_config.sh
+
 - name: 'Copy install wordpress script'
   template: src=install_wordpress.sh dest={{ wp_cli_home }}
 
@@ -70,14 +83,3 @@
 
 - name: 'ensure wordpress switch to ip at boot'
   lineinfile: dest=/etc/rc.local insertbefore='^exit 0$' line='su -lc /usr/bin/wordpress_switch_to_ip {{ wordpress_install_user }} || true'
-
-- name: 'scripts for ATDD course'
-  copy: src={{ item }} dest=/usr/bin mode=a+x
-  with_items:
-    - jinzhipinglun
-    - keyipinglun
-    - shanchupinglun
-    - shanchuyonghu
-    - tianjiayonghu
-    - xinzengbianjiyonghu
-    - xiugaimima
