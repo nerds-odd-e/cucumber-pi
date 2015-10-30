@@ -64,7 +64,7 @@
     - zhongxuanbu
 
 - name: 'WordPress wwwroot directory'
-  file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rwx,o-w recurse=yes
+  file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rw,o-w
 
 - name: 'Copy install wordpress script'
   template: src=install_wordpress.sh dest={{ wp_cli_home }}
@@ -72,6 +72,9 @@
 - name: 'Install WordPress using wp-cli'
   shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" {{ wordpress_install_user }}
          creates={{ wordpress_wwwroot }}/odd-e.txt
+
+- name: 'remove default index.html'
+  file: name={{ wordpress_wwwroot }}/index.html state=absent
 
 - name:  'enables the Apache2 module "rewrite"'
   apache2_module: state=present name=rewrite
