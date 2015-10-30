@@ -16,6 +16,7 @@
 
 - name: 'Cucumber/Capybara'
   shell: 'set -e;
+      source ~/.rvm/scripts/rvm;
       rvm use ruby-{{ ruby_version }} --default;
       gem sources --remove https://rubygems.org/;
       gem sources -a https://ruby.taobao.org/;
@@ -40,7 +41,7 @@
   copy: src=profile.d/cucumber.sh dest=/etc/profile.d/
 
 - name: 'JRuby'
-  shell: 'rvm install jruby-{{ jruby_version }}'
+  shell: 'source ~/.rvm/scripts/rvm; rvm install jruby-{{ jruby_version }}'
   args:
     creates: "{{ user_home }}/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
     executable: /bin/bash
@@ -48,6 +49,7 @@
 
 - name: 'Cucumber/Swinger for JRuby'
   shell: 'set -e;
+      source ~/.rvm/scripts/rvm;
       rvm use jruby-{{ jruby_version }};
       jruby -S gem install cucumber rake rspec rspec-matchers-matchers;
       jruby -S gem install --version 0.0.3 swinger;'
