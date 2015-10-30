@@ -2,16 +2,24 @@
 set -e
 if [[ -z "$1" ]]; then
     echo "Usage:"
-    echo "    $(basename "$0") <user|user@example.com>"
+    echo "    $(basename "$0") <user|user@example.com> [comment content]"
     exit 1
 fi
+
+QUERY_PARAMS=(--format=ids)
 
 AUTHOR_EMAIL="$1"
 if ! echo "$AUTHOR_EMAIL" | grep -F "@" 1>/dev/null 2>&1; then
     AUTHOR_EMAIL="$1@example.com"
 fi
+QUERY_PARAMS+=("--author_email=$AUTHOR_EMAIL")
 
-COMMENT_IDS="$(wp comment list --format=ids --author_email="$AUTHOR_EMAIL")"
-[[ -z "$COMMENT_IDS" ]] || wp comment delete $COMMENT_IDS --force
+COMMENT_CONTENT="$2"
+if [[ ! -z "$COMMENT_CONTENT" ]]; then
+    QUERY_PARAMS+=("--search=${COMMENT_CONTENT}")
+fi
+
+COMMENT_IDS="$(wp comment list "${QUERY_PARAMS[@]}")"
+[[ -z "$COMMENT_IDS" ]] || wp comment delete ${COMMENT_IDS} --force
 
 echo Done.
