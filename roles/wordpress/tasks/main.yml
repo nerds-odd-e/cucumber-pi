@@ -2,7 +2,7 @@
 - name: 'Install Apache httpd'
   apt: name=apache2
 
-- name: 'Add pi to group www-data'
+- name: 'Appending user {{ wordpress_install_user }} to group www-data'
   user: name={{ wordpress_install_user }} append=yes groups=www-data
 
 - name: 'Install MySQL server'
@@ -63,11 +63,11 @@
     - xiugaimima
     - zhongxuanbu
 
+- name: 'WordPress wwwroot directory'
+  file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rwx,o-w recurse=yes
+
 - name: 'Copy install wordpress script'
   template: src=install_wordpress.sh dest={{ wp_cli_home }}
-
-- name: 'WordPress wwwroot directory'
-  file: path={{ wordpress_wwwroot }} state=directory owner=www-data group=www-data mode=ug+rwx,o-w
 
 - name: 'Install WordPress using wp-cli'
   shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" {{ wordpress_install_user }}

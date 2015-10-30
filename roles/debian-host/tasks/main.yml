@@ -1,0 +1,7 @@
+- name: 'Update system packages cache every 3 days'
+  apt: update_cache=yes cache_valid_time=259200
+  notify: 'update system packages'
+
+- name: 'Locales'
+  locale_gen: name={{ item }}
+  with_items: locales

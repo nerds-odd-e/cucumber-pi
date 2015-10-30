@@ -4,9 +4,19 @@
 
   hosts: odd-pi
   roles:
+    - debian-host
     - pi
     - wordpress
     - java-develop
     - cucumber
   remote_user: pi
   sudo: yes
+
+- name: Vagrant
+  hosts: vagrant
+  sudo: yes
+  roles:
+    - role: debian-host
+    - role: wordpress
+      wordpress_install_user: vagrant
+      wordpress_wwwroot: /var/www/html
