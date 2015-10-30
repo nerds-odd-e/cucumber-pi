@@ -1,0 +1,6 @@
+---
+- name: 'install android sdk'
+  script: install_android-sdk.sh "{{ android_home }}" "{{ android_sdk_version }}" creates={{ android_home }}/.sdk-{{ android_sdk_version }}
+
+- name: 'install android sdk packages'
+  script: install_android-sdk_packages.sh "{{ android_home }}" "tools,platform-tools,build-tools-21.1.1,android-21,build-tools-19.1.0,android-19,extra-android-m2repository,extra-android-support,extra-google-m2repository}" creates={{ android_home }}/.sdk-packages

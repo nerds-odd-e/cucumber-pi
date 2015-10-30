@@ -20,3 +20,8 @@
     - role: wordpress
       wordpress_install_user: vagrant
       wordpress_wwwroot: /var/www/html
+    - role: java-develop
+      java_home: /usr/lib/jvm/java-7-openjdk-i386
+    - role: cucumber
+      user: "{{ ansible_ssh_user }}"
+    - role: android-sdk
