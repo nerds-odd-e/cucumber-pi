@@ -1,4 +1,4 @@
-JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt
+JAVA_HOME={{ java_home }}
 export JAVA_HOME
 
 MAVEN_HOME=/opt/apache-maven-{{ maven_version }}
