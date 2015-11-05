@@ -4,6 +4,8 @@ set -e
 ANDROID_HOME="${1:-/opt/android-sdk-linux}"
 ANDROID_SDK_PACKAGES="${2:-tools,platform-tools,build-tools-21.1.1,android-21,build-tools-19.1.0,android-19,extra-android-m2repository,extra-android-support,extra-google-m2repository}"
 
+ANDROID_PROFILE_FILENAME=/etc/profile.d/android.sh
+
 echo "Install Android SDK Packages ..."
 
 apt-get install -y expect
