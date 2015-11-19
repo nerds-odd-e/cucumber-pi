@@ -1,0 +1,17 @@
+- name: 'Ensure python 2.7'
+  apt: name=python2.7,python-pip
+
+- name: 'Ensure virtualenv'
+  pip: name=virtualenv
+
+- name: 'Install Robot Framework using PIP'
+  pip: name={{ item }} virtualenv=/opt/robotframework virtualenv_site_packages=yes
+  with_items:
+    - robotframework
+    - robotframework-selenium2library
+
+- name: 'Ensure firefox'
+  apt: name=firefox
+
+- name: 'profile for virtualenv'
+  copy: src=virtualenv.sh dest=/etc/profile.d/
