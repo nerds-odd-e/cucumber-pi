@@ -4,14 +4,19 @@
 - name: 'Ensure virtualenv'
   pip: name=virtualenv
 
+- name: 'Ensure directory /opt/robotframework'
+  file: name=/opt/virtualenv state=directory owner="{{ ansible_ssh_user }}"
+
 - name: 'Install Robot Framework using PIP'
-  pip: name={{ item }} virtualenv=/opt/robotframework virtualenv_site_packages=yes
+  pip: name={{ item }} virtualenv=/opt/virtualenv/robotframework virtualenv_site_packages=yes
   with_items:
     - robotframework
     - robotframework-selenium2library
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
 
-- name: 'Ensure firefox'
-  apt: name=firefox
+- name: 'Ensure Chromium'
+  apt: name=chromium
 
 - name: 'profile for virtualenv'
   copy: src=virtualenv.sh dest=/etc/profile.d/
