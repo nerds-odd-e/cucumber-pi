@@ -28,3 +28,6 @@
     - android-sdk
     - xvfb
     - robot-framework
+    - role: rinetd
+      rules:
+        - { bindPort: 9000, connectPort: 80 }

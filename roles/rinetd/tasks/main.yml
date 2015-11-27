@@ -1,0 +1,6 @@
+- name: 'Ensure rinetd'
+  apt: name=rinetd
+
+- name: 'rinetd rules'
+  template: src=rinetd.conf.j2 dest=/etc/rinetd.conf
+  notify: 'restart rinetd'
