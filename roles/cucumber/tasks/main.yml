@@ -46,14 +46,3 @@
     creates: "{{ user_home }}/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
     executable: /bin/bash
   sudo_user: "{{ user }} -i"
-
-- name: 'Cucumber/Swinger for JRuby'
-  shell: 'set -e;
-      source ~/.rvm/scripts/rvm;
-      rvm use jruby-{{ jruby_version }};
-      jruby -S gem install cucumber rake rspec rspec-matchers-matchers;
-      jruby -S gem install --version 0.0.3 swinger;'
-  args:
-    creates: "{{ user_home }}/.rvm/gems/jruby-{{ jruby_version }}/gems/swinger-0.0.3"
-    executable: /bin/bash
-  sudo_user: "{{ user }} -i"
