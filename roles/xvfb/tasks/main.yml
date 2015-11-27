@@ -1,0 +1,14 @@
+- name: "Ensure Xvfb"
+  apt: name=xvfb
+
+- name: "init script for Xvfb"
+  template: src=xvfb.j2 dest=/etc/init.d/xvfb mode=a+x
+
+- name: 'Default display id'
+  template: src=profile_xvfb.sh.j2 dest=/etc/profile.d/xvfb.sh
+
+- name: "Enable service xvfb"
+  service: name=xvfb enabled=yes
+
+- name: "Ensure server xvfb started"
+  service: name=xvfb state=running
