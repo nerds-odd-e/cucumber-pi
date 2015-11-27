@@ -16,7 +16,7 @@
   become_user: "{{ ansible_ssh_user }}"
 
 - name: 'Ensure Chromium'
-  apt: name=chromium
+  apt: name={{ robot_framework.browser }}
 
 - name: 'profile for virtualenv'
   copy: src=virtualenv.sh dest=/etc/profile.d/
