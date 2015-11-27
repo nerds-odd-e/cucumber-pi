@@ -24,4 +24,5 @@
       java_home: /usr/lib/jvm/java-7-openjdk-i386
     - role: cucumber
       user: "{{ ansible_ssh_user }}"
-    - role: android-sdk
+    - android-sdk
+    - robot-framework
