@@ -6,7 +6,7 @@
     brew install caskroom/cask/brew-cask
     brew cask install virtualbox vagrant
     brew install ansible
-    copy playbook.yml-example playbook.yml
+    cp playbook.yml-example playbook.yml
     vagrant up
 
 ### reconfigure vagrant
