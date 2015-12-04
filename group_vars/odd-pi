@@ -1,2 +1,2 @@
 robot_framework:
-  browser: chromium
+  browser: iceweasel
