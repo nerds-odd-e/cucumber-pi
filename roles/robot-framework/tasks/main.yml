@@ -15,7 +15,7 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 
-- name: 'Ensure Chromium'
+- name: 'Ensure {{ robot_framework.browser }}'
   apt: name={{ robot_framework.browser }}
 
 - name: 'profile for virtualenv'

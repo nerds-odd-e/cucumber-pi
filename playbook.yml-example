@@ -11,11 +11,9 @@
     - cucumber
     - robot-framework
   remote_user: pi
-  sudo: yes
 
 - name: Vagrant
   hosts: vagrant
-  sudo: yes
   roles:
     - debian-host
     - role: wordpress
