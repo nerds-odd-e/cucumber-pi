@@ -68,11 +68,13 @@
   file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rw,o-w
 
 - name: 'Copy install wordpress script'
-  template: src=install_wordpress.sh dest={{ wp_cli_home }}
+  template: src=install_wordpress.sh dest={{ wp_cli_home }} mode=a+x
 
 - name: 'Install WordPress using wp-cli'
-  shell: su -lc "bash {{ wp_cli_home }}/install_wordpress.sh" {{ wordpress_install_user }}
-         creates={{ wordpress_wwwroot }}/odd-e.txt
+  shell: "{{ wp_cli_home }}/install_wordpress.sh"
+  args:
+    creates: "{{ wordpress_wwwroot }}/odd-e.txt"
+  become_user: "{{ wordpress_install_user }}"
 
 - name: 'remove default index.html'
   file: name={{ wordpress_wwwroot }}/index.html state=absent
@@ -80,11 +82,12 @@
 - name:  'enables the Apache2 module "rewrite"'
   apache2_module: state=present name=rewrite
 
+- name: 'Allow .htaccess overwriten for default website'
+  template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf-enabled/default_www_htaccess.conf
+  notify: restart apache2
+
 - name: '.htaccess for WordPress'
   copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w
 
 - name: 'Update system motd'
   template: src=motd dest=/etc/motd
-
-- name: 'ensure wordpress switch to ip at boot'
-  lineinfile: dest=/etc/rc.local insertbefore='^exit 0$' line='su -lc /usr/bin/wordpress_switch_to_ip {{ wordpress_install_user }} || true'

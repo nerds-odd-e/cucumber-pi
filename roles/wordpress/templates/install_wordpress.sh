@@ -3,6 +3,10 @@ set -e
 
 WORDPRESS_VERSION=4.2.4
 WORDPRESS_HOME="{{ wordpress_wwwroot }}"
+{% if wordpress_url is defined %}
+WORDPRESS_URL="{{ wordpress_url }}"
+{% endif %}
+WORDPRESS_URL="${WORDPRESS_URL:-http://$(hostname -f)}"
 
 WORDPRESS_DBHOST="{{ wordpress_mysql_hostname }}"
 WORDPRESS_DBNAME="{{ wordpress_mysql_database }}"
@@ -21,7 +25,7 @@ $WP_CLI_CMD core download --force --path=${WORDPRESS_HOME} --locale=en_US --vers
 $WP_CLI_CMD core config --dbname=${WORDPRESS_DBNAME} --dbuser=${WORDPRESS_DBUSER} --dbpass=${WORDPRESS_DBPASS} --dbhost=${WORDPRESS_DBHOST} --dbprefix=wp_ --dbcharset=utf8
 $WP_CLI_CMD db drop --yes || true
 $WP_CLI_CMD db create
-$WP_CLI_CMD core install --url="http://$(hostname -f)" --title="Specification By Example Workshop" --admin_user=odd-e --admin_password=s3cr3t --admin_email=chaifeng@odd-e.com
+$WP_CLI_CMD core install --url="http://wordpress.local/" --title="Specification By Example Workshop" --admin_user=odd-e --admin_password=s3cr3t --admin_email=chaifeng@odd-e.com
 
 $WP_CLI_CMD plugin install wordpress-importer --activate
 
@@ -41,5 +45,6 @@ $WP_CLI_CMD user create tom tom@chaifeng.com --role=editor --user_pass=s3cr3t --
 $WP_CLI_CMD user create mary mary@chaifeng.com --role=subscriber --user_pass=s3cr3t --first_name=Mary
 
 /usr/bin/wordpress_reset_config.sh
+/usr/bin/wordpress_switch_to_url "${WORDPRESS_URL}"
 
 touch "${WORDPRESS_HOME}/odd-e.txt"

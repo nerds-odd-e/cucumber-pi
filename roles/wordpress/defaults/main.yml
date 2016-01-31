@@ -1,4 +1,5 @@
 wordpress_wwwroot: /var/www
+# wordpress_url: http://localhost/
 
 wordpress_install_user: pi
 
