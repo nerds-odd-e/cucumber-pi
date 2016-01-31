@@ -67,6 +67,9 @@
 - name: 'WordPress wwwroot directory'
   file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rw,o-w
 
+- name: 'Update system motd'
+  template: src=motd dest=/etc/motd
+
 - name: 'Copy install wordpress script'
   template: src=install_wordpress.sh dest={{ wp_cli_home }} mode=a+x
 
@@ -88,6 +91,3 @@
 
 - name: '.htaccess for WordPress'
   copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w
-
-- name: 'Update system motd'
-  template: src=motd dest=/etc/motd
