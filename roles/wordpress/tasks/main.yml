@@ -84,6 +84,7 @@
 
 - name:  'enables the Apache2 module "rewrite"'
   apache2_module: state=present name=rewrite
+  notify: restart apache2
 
 - name: 'Allow .htaccess overwriten for default website'
   template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf-enabled/default_www_htaccess.conf
