@@ -1,4 +1,4 @@
----
+--- # -*- mode: yaml -*- # ---
 
 - name: Ansible Playbook for configuring brand new Raspberry Pi
 
@@ -16,9 +16,13 @@
   hosts: vagrant
   roles:
     - debian-host
+    - role: rinetd
+      rules:
+        - { bindPort: 9000, connectPort: 80 }
     - role: wordpress
       wordpress_install_user: "{{ ansible_ssh_user }}"
       wordpress_wwwroot: /var/www/html
+      wordpress_url: http://localhost:9000/
     - role: java-develop
       java_home: /usr/lib/jvm/java-7-openjdk-i386
     - role: cucumber
@@ -26,6 +30,3 @@
     - android-sdk
     - xvfb
     - robot-framework
-    - role: rinetd
-      rules:
-        - { bindPort: 9000, connectPort: 80 }
