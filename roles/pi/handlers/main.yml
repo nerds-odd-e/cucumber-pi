@@ -11,9 +11,9 @@
     - 'wait for reboot'
 
 - name: 'pause for reboot'
-  sudo: no
+  become: no
   pause: seconds=30
 
 - name: 'wait for reboot'
-  sudo: no
+  become: no
   local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=60
