@@ -1,3 +1,6 @@
+- name: Restart apache2
+  service: name=apache2 state=restarted
+
 - name: 'update system packages'
   apt: upgrade=yes
 

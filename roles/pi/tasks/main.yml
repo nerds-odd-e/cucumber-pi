@@ -25,6 +25,7 @@
 
 - name: 'apache default site configuration'
   template: src=apache2/default dest=/etc/apache2/sites-available/default
+  notify: Restart apache2
 
 - name: 'enable apache default site'
   file: path=/etc/apache2/sites-enabled/000-default
