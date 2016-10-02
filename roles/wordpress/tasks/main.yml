@@ -76,7 +76,7 @@
 - name: 'Install WordPress using wp-cli'
   shell: "{{ wp_cli_home }}/install_wordpress.sh"
   args:
-    creates: "{{ wordpress_wwwroot }}/odd-e.txt"
+    creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
   become_user: "{{ wordpress_install_user }}"
 
 - name: 'remove default index.html'
@@ -87,7 +87,7 @@
   notify: restart apache2
 
 - name: 'Allow .htaccess overwriten for default website'
-  template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf-enabled/default_www_htaccess.conf
+  template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf.d/default_www_htaccess.conf
   notify: restart apache2
 
 - name: '.htaccess for WordPress'
