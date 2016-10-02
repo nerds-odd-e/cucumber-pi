@@ -8,7 +8,8 @@
     - pi
     - wordpress
     - java-develop
-    - cucumber
+    - role: cucumber
+      become: False
     - robot-framework
     - role: samba
       samba_users:
