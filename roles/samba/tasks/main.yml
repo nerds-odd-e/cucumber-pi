@@ -1,0 +1,13 @@
+- name: Ensure samba
+  apt: name=samba,smbclient,samba-common-bin
+
+- name: Ensure samba configuration
+  template: src=smb.conf.j2 dest=/etc/samba/smb.conf
+  notify: Restart samba
+
+- name: Create samba user
+  shell: |
+    if ! pdbedit -L | grep "^{{ item.name }}" 2>&1 > /dev/null; then
+      (echo {{ item.password }}; echo {{ item.password }}) | smbpasswd -s -a {{ item.name }}
+    fi
+  with_items: "{{ samba_users }}"

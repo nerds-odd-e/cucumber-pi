@@ -10,6 +10,17 @@
     - java-develop
     - cucumber
     - robot-framework
+    - role: samba
+      samba_users:
+        - name: pi
+          password: raspberry
+      samba_shares:
+        - name: src
+          path: /home/pi/src
+          valid_users: pi
+          browseable: yes
+          writeable: yes
+          read_only: no
   remote_user: pi
 
 - name: Vagrant
