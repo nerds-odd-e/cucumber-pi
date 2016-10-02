@@ -4,8 +4,8 @@
     - upgrade packages
 
 - name: 'Locales'
-  locale_gen: name={{ item }}
-  with_items: locales
+  locale_gen: name="{{ item }}"
+  with_items: "{{ locales }}"
 
 - name: 'ensure avahi'
   apt: name=avahi-daemon
