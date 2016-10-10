@@ -31,10 +31,10 @@
     gem sources -a https://ruby.taobao.org/;
     gem sources --list;
     gem install --no-rdoc --no-ri cucumber capybara capybara-mechanize rspec;
-    gem install --no-rdoc --no-ri --version 1.10.6 bundler;
+    gem install --no-rdoc --no-ri --version 1.12.5 bundler;
   args:
     executable: /bin/bash
-    creates: "{{ user_home }}/.rvm/gems/ruby-{{ ruby_version }}/gems/bundler-1.10.6"
+    creates: "{{ user_home }}/.rvm/gems/ruby-{{ ruby_version }}/gems/bundler-1.12.5"
 
 - name: 'cucumber-pi folder'
   file: path=/usr/local/cucumber-pi state=directory mode=a+rx,u+w
