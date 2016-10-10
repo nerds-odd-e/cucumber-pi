@@ -1,48 +1,61 @@
 ---
-- name: 'ensure RVM'
-  shell: 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 && curl -sSL https://get.rvm.io | bash -s stable'
+- name: 'Ensure RVM'
+  shell: |
+    set -e
+    if ! gpg --list-keys | fgrep D39DC0E3 >/dev/null 2>&1; then
+      gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    fi
+    curl -sSL https://get.rvm.io | bash -s -- stable --auto-dotfiles
   args:
+    executable: /bin/bash
     creates: "{{ user_home }}/.rvm/scripts/rvm"
-  become_user: "{{ user }} -i"
 
 - name: 'Ruby'
-  shell: 'set -e;
-      rvm install ruby-{{ ruby_version }};
-      rvm alias create default ruby-{{ ruby_version }}'
+  shell: |
+    set -e;
+    export PATH="$PATH:$HOME/.rvm/bin"
+    source $HOME/.rvm/scripts/rvm
+    rvm install ruby-{{ ruby_version }};
+    rvm alias create default ruby-{{ ruby_version }}
   args:
-    creates: "{{ user_home }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/ruby"
     executable: /bin/bash
-  become_user: "{{ user }} -i"
+    creates: "{{ user_home }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/ruby"
 
 - name: 'Cucumber/Capybara'
-  shell: 'set -e;
-      source ~/.rvm/scripts/rvm;
-      rvm use ruby-{{ ruby_version }} --default;
-      gem sources --remove https://rubygems.org/;
-      gem sources -a https://ruby.taobao.org/;
-      gem sources --list;
-      gem install --no-rdoc --no-ri cucumber capybara capybara-mechanize rspec;
-      gem install --no-rdoc --no-ri --version 1.10.6 bundler;'
+  shell: |
+    set -e;
+    source ~/.rvm/scripts/rvm;
+    export PATH="$PATH:$HOME/.rvm/bin"
+    rvm use ruby-{{ ruby_version }} --default;
+    gem sources --remove https://rubygems.org/;
+    gem sources -a https://ruby.taobao.org/;
+    gem sources --list;
+    gem install --no-rdoc --no-ri cucumber capybara capybara-mechanize rspec;
+    gem install --no-rdoc --no-ri --version 1.10.6 bundler;
   args:
-    creates: "{{ user_home }}/.rvm/gems/ruby-{{ ruby_version }}/gems/bundler-1.10.6"
     executable: /bin/bash
-  become_user: "{{ user }} -i"
+    creates: "{{ user_home }}/.rvm/gems/ruby-{{ ruby_version }}/gems/bundler-1.10.6"
 
 - name: 'cucumber-pi folder'
   file: path=/usr/local/cucumber-pi state=directory mode=a+rx,u+w
+  become: yes
 
 - name: 'capybara-gen'
   copy: src=capybara-gen dest=/usr/local/cucumber-pi mode=a+rx
+  become: yes
 
 - name: 'capybara-gen archive source'
   copy: src=empty_feature.tgz dest=/usr/local/cucumber-pi
+  become: yes
 
 - name: 'alias for capybara-gen'
   copy: src=profile.d/cucumber.sh dest=/etc/profile.d/
+  become: yes
 
 - name: 'JRuby'
-  shell: 'source ~/.rvm/scripts/rvm; rvm install jruby-{{ jruby_version }}'
-  args:
-    creates: "{{ user_home }}/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
+  shell: |
+    source ~/.rvm/scripts/rvm;
+    rvm install jruby-{{ jruby_version }}
+  args:    
     executable: /bin/bash
-  become_user: "{{ user }} -i"
+    creates: "{{ user_home }}/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
