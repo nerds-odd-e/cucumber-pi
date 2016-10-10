@@ -12,8 +12,7 @@
   with_items:
     - robotframework
     - robotframework-selenium2library
-  become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become: no
 
 - name: 'Ensure {{ robot_framework.browser }}'
   apt: name={{ robot_framework.browser }}
