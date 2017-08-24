@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 set -eu -o pipefail
 
-# if [[ "$(id -u)" -ne 0 ]]; then
-#     sudo "$0" "$@"
-#     exit $?
-# fi
+declare SSID
+declare PSK
+
+if [[ "$#" -eq 0 ]]; then
+    cat <<EOF
+Usage:
+  "$0 SSID PSK"
+
+EOF
+else
+    SSID="${1}"
+    PSK="${2:-}"
+fi
 
 typeset -a DISK_LIST_READONLY
 
@@ -39,6 +48,21 @@ echo "Will skip these disks: ${DISK_LIST_READONLY[*]}"
 contains DISK_LIST_READONLY[@] /dev/disk0
 contains DISK_LIST_READONLY[@] /dev/disk1 || true
 
+WPA_SUPPLICANT="$(mktemp)"
+if [[ -n "$SSID" ]]; then
+    cat > "${WPA_SUPPLICANT}" <<EOF
+country=US
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="$SSID"
+    psk="$PSK"
+}
+EOF
+    sed -i -e '/^ *psk=""/d' "${WPA_SUPPLICANT}"
+fi
+
 while true; do
     echo -n "Insert a new SD card, and will find it automaticly."$'\r'
     declare SDCARD
@@ -57,6 +81,11 @@ while true; do
         touch "${BOOT_VOLUME}/ssh"
         echo "${BOOT_VOLUME}/ssh created."
     fi
+
+    if test -n "$SSID" && cp "${WPA_SUPPLICANT}" "${BOOT_VOLUME}/wpa_supplicant.conf"; then
+        echo "${BOOT_VOLUME}/wpa_supplicant.conf created."
+    fi
+
     diskutil eject "$SDCARD"
 
     echo "Enable SSH on $SDCARD done and has been rejected."
