@@ -4,7 +4,6 @@
 
   hosts: odd-pi
   roles:
-    - debian-host
     - pi
     - wordpress
     - java-develop
