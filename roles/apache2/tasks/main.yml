@@ -1,0 +1,6 @@
+- name: Ensure Apache2 server
+  apt: name=apache2
+
+- name: Ensure apache2 module rewrite
+  apache2_module: name=rewrite
+  notify: Restart apache2

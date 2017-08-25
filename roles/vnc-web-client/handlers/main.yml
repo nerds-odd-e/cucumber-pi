@@ -1,0 +1,2 @@
+- name: 'Restart vncwebclient'
+  service: name=vncwebclient state=restarted

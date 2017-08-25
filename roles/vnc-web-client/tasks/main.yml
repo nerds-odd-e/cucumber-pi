@@ -1,0 +1,21 @@
+- name: 'VNC client server'
+  apt: name=novnc
+
+- name: 'vnc configuration for apache'
+  template: src=vnc-web-client.conf.j2 dest=/etc/apache2/conf-available/vnc-web-client.conf
+  notify: Restart apache2
+
+- name: 'enable vnc configuration'
+  file:
+    path: /etc/apache2/conf-enabled/vnc-web-client.conf
+    state: link
+    src: ../conf-available/vnc-web-client.conf
+  notify: Restart apache2
+
+- name: 'vnc web client service'
+  template: src=vncwebclient dest=/etc/init.d mode=a+x
+  notify: Restart vncwebclient
+
+- name: 'enable vnc web client service'
+  service: name=vncwebclient enabled=yes state=started
+  notify: Restart vncwebclient
