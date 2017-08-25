@@ -1,6 +1,10 @@
 - name: Ensure samba
   apt: name=samba,smbclient,samba-common-bin
 
+- name: Ensure share folders
+  file: path="{{ item.path }}" state=directory owner="{{ item.valid_users }}"
+  with_items: "{{ samba_shares }}"
+
 - name: Ensure samba configuration
   template: src=smb.conf.j2 dest=/etc/samba/smb.conf
   notify: Restart samba
