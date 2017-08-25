@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -eu -o pipefail
 
-declare SSID
-declare PSK
+source "$(dirname "$0")/sdcard_function.inc.sh"
+
+declare SSID=
+declare PSK=
 
 if [[ "$#" -eq 0 ]]; then
     cat <<EOF
@@ -14,39 +16,6 @@ else
     SSID="${1}"
     PSK="${2:-}"
 fi
-
-typeset -a DISK_LIST_READONLY
-
-function get_disk_list() {
-    diskutil list "$@" | grep -Eo "^/dev/disk[0-9]+"
-}
-
-function contains() {
-    local -a _ARRAY=("${!1}")
-    local _ELEMENT="$2"
-    for _e in "${_ARRAY[@]}"; do
-        [[ ! "$_e" == "$_ELEMENT" ]] || return 0
-    done
-    return 1
-}
-
-function find_sdcard() {
-    local -a _DISKS=( $(get_disk_list physical) )
-    for _D in "${_DISKS[@]}"; do
-        if ! contains DISK_LIST_READONLY[@] "$_D"; then
-            echo "$_D"
-            return 0
-        fi
-    done
-    return 1
-}
-
-DISK_LIST_READONLY=( $(get_disk_list) )
-
-echo "Will skip these disks: ${DISK_LIST_READONLY[*]}"
-
-contains DISK_LIST_READONLY[@] /dev/disk0
-contains DISK_LIST_READONLY[@] /dev/disk1 || true
 
 WPA_SUPPLICANT="$(mktemp)"
 if [[ -n "$SSID" ]]; then
@@ -63,19 +32,8 @@ EOF
     sed -i -e '/^ *psk=""/d' "${WPA_SUPPLICANT}"
 fi
 
-while true; do
-    echo -n "Insert a new SD card, and will find it automaticly. Press enter key to exit."$'\r'
-    declare SDCARD
-    SDCARD="$(find_sdcard || true)"
-    if test -z "$SDCARD"; then
-        read -t 2 && exit 0
-        continue
-    fi
 
-    echo -e "\n\nFound a SD card $SDCARD\n"
-
-    [[ "$SDCARD" == /dev/disk[2-9] ]]
-
+function enable_ssh_and_wifi(){
     BOOT_VOLUME="$(mount | grep -E "^${SDCARD}s1 " | cut -d' ' -f3)"
     echo "Found boot at $BOOT_VOLUME"
     if [[ -f "${BOOT_VOLUME}/ssh" ]]; then
@@ -88,10 +46,6 @@ while true; do
     if test -n "$SSID" && cp "${WPA_SUPPLICANT}" "${BOOT_VOLUME}/wpa_supplicant.conf"; then
         echo "${BOOT_VOLUME}/wpa_supplicant.conf created."
     fi
+}
 
-    diskutil eject "$SDCARD"
-
-    echo "Enable SSH on $SDCARD done and has been rejected."
-    echo "Replace a new SD card now."
-    echo ""
-done
+run enable_ssh_and_wifi
