@@ -18,7 +18,7 @@ fi
 typeset -a DISK_LIST_READONLY
 
 function get_disk_list() {
-    diskutil list | grep -Eo "^/dev/disk[0-9]+"
+    diskutil list "$@" | grep -Eo "^/dev/disk[0-9]+"
 }
 
 function contains() {
@@ -31,7 +31,7 @@ function contains() {
 }
 
 function find_sdcard() {
-    local -a _DISKS=( $(get_disk_list) )
+    local -a _DISKS=( $(get_disk_list physical) )
     for _D in "${_DISKS[@]}"; do
         if ! contains DISK_LIST_READONLY[@] "$_D"; then
             echo "$_D"
@@ -64,10 +64,13 @@ EOF
 fi
 
 while true; do
-    echo -n "Insert a new SD card, and will find it automaticly."$'\r'
+    echo -n "Insert a new SD card, and will find it automaticly. Press enter key to exit."$'\r'
     declare SDCARD
     SDCARD="$(find_sdcard || true)"
-    test -z "$SDCARD" && sleep 2 && continue
+    if test -z "$SDCARD"; then
+        read -t 2 && exit 0
+        continue
+    fi
 
     echo -e "\n\nFound a SD card $SDCARD\n"
 
