@@ -3,9 +3,13 @@
   notify:
     - upgrade packages
 
-- name: 'Locales'
+- name: Enable en & zh locales
+  lineinfile: path=/etc/locale.gen line="{{ item }}"
+  with_items: "{{ locales }}"
+
+- name: 'Ensure locales'
   locale_gen: name="{{ item }}"
   with_items: "{{ locales }}"
 
-- name: 'ensure avahi'
+- name: 'Ensure avahi'
   apt: name=avahi-daemon
