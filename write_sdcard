@@ -39,7 +39,7 @@ function write_raspberry_img() {
     du -h "$RASPBERRY_IMG"
     echo "Press Ctrl-T to show the writing progress, the size of image is $(stat --printf='%s' "$RASPBERRY_IMG")"
     diskutil unmountDisk "$SDCARD"
-    gen_write_sdcard_command "$SDCARD" | bash -x
+    gen_write_sdcard_command "$SDCARD" | time bash -x
 
     sleep 2
 }
