@@ -1,0 +1,6 @@
+dependencies:
+  - apache2
+  - role: mysql
+    mysql_database: "{{ wordpress_mysql_database }}"
+    mysql_username: "{{ wordpress_mysql_username }}"
+    mysql_password: "{{ wordpress_mysql_password }}"

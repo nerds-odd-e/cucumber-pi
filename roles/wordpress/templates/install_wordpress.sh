@@ -19,7 +19,7 @@ source /etc/profile.d/wp-cli.sh
 
 echo "Install WordPress ..."
 
-find "${WORDPRESS_HOME}" -mindepth 1 -delete
+find "${WORDPRESS_HOME}/" -mindepth 1 -delete
 
 $WP_CLI_CMD core download --force --path=${WORDPRESS_HOME} --locale=en_US --version=${WORDPRESS_VERSION}
 $WP_CLI_CMD core config --dbname=${WORDPRESS_DBNAME} --dbuser=${WORDPRESS_DBUSER} --dbpass=${WORDPRESS_DBPASS} --dbhost=${WORDPRESS_DBHOST} --dbprefix=wp_ --dbcharset=utf8
@@ -31,7 +31,7 @@ $WP_CLI_CMD plugin install wordpress-importer --activate
 
 $WP_CLI_CMD theme activate twentyfourteen
 $WP_CLI_CMD post delete 1 2
-$WP_CLI_CMD import --authors=create "$(dirname "$0")/specificationbyexampleworkshop.wordpress.xml"
+$WP_CLI_CMD import --authors=skip "$(dirname "$0")/specificationbyexampleworkshop.wordpress.xml"
 
 echo "Update WordPress configration ..."
 

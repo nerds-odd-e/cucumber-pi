@@ -1,5 +1,5 @@
 wordpress_version: 4.6.1
-wordpress_wwwroot: /var/www
+wordpress_wwwroot: /var/www/html
 # wordpress_url: http://localhost/
 
 wordpress_install_user: pi

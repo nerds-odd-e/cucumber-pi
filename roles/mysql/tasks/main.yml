@@ -1,0 +1,17 @@
+- name: 'Install MySQL server'
+  apt: name={{ item }}
+  with_items:
+    - python-mysqldb
+    - mysql-server
+  register: mysql_server
+
+- name: 'Allow from anywhere to connect'
+  shell: sed -i.orig "/bind-address/cbind-address = 0.0.0.0" /etc/mysql/my.cnf
+  when: mysql_server|changed
+
+- name: 'MySQL DB {{ mysql_database }}'
+  mysql_db: name={{ mysql_database }} encoding=utf8 collation=utf8_bin
+
+- name: 'MySQL user {{ mysql_username }}'
+  mysql_user: name={{ mysql_username }} password={{ mysql_password }} priv=*.*:ALL state=present
+

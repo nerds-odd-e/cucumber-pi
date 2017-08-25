@@ -1,29 +1,9 @@
 ---
-- name: 'Install Apache httpd'
-  apt: name=apache2
-
 - name: 'Appending user {{ wordpress_install_user }} to group www-data'
   user: name={{ wordpress_install_user }} append=yes groups=www-data
 
-- name: 'Install MySQL server'
-  apt: name={{ item }}
-  with_items:
-    - python-mysqldb
-    - mysql-server
-  register: mysql_server
-
-- name: 'Change MySQL configuration'
-  shell: sed -i.orig "/bind-address/cbind-address = 0.0.0.0" /etc/mysql/my.cnf
-  when: mysql_server|changed
-
 - name: 'Install PHP'
-  apt: name=php5,php5-mysql
-
-- name: 'MySQL DB for WordPress'
-  mysql_db: name={{ wordpress_mysql_database }} encoding=utf8 collation=utf8_bin
-
-- name: 'MySQL user for WordPress'
-  mysql_user: name={{ wordpress_mysql_username }} password={{ wordpress_mysql_password }} priv=*.*:ALL state=present
+  apt: name=php7.0,php7.0-mysql
 
 - name: 'Ensure /opt/wp-cli exist'
   file: path={{ wp_cli_home }} state=directory
@@ -65,7 +45,7 @@
     - zhongxuanbu
 
 - name: 'WordPress wwwroot directory'
-  file: path={{ wordpress_wwwroot }} state=directory owner={{ wordpress_install_user }} group=www-data mode=ug+rw,o-w
+  file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ wordpress_install_user }}" recurse=yes group=www-data mode=ug+rw,o-w
 
 - name: 'Update system motd'
   template: src=motd dest=/etc/motd
@@ -84,11 +64,11 @@
 
 - name:  'enables the Apache2 module "rewrite"'
   apache2_module: state=present name=rewrite
-  notify: restart apache2
+  notify: Restart apache2
 
 - name: 'Allow .htaccess overwriten for default website'
-  template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf.d/default_www_htaccess.conf
-  notify: restart apache2
+  template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf-enabled/default_www_htaccess.conf
+  notify: Restart apache2
 
 - name: '.htaccess for WordPress'
   copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w
