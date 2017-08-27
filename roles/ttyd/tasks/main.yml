@@ -1,0 +1,61 @@
+- name: Ensure tools that needed by compiling ttyd
+  apt: name=cmake,g++,pkg-config,git,vim-common,libwebsockets-dev,libjson-c-dev,libssl-dev
+
+- name: Ensure the source directory for ttyd
+  file: path=/usr/local/src/ttyd state=directory
+
+- name: Checkout ttyd
+  git:
+    repo: https://github.com/tsl0922/ttyd.git
+    dest: /usr/local/src/ttyd
+    clone: yes
+    update: yes
+
+- name: Compile ttyd
+  shell: |
+    set -e
+    mkdir build
+    cd build
+    cmake ..
+    make
+    make install
+  args:
+    creates: /usr/local/bin/ttyd
+    executable: /bin/bash
+    chdir: /usr/local/src/ttyd
+
+- name: Ensure TTYd service
+  copy:
+    content: |
+      [Unit]
+      Description=TTYd Terminal
+
+      [Service]
+      ExecStart=/usr/local/bin/ttyd --port {{ ttyd_port | default('7681') }} /bin/bash -l
+
+      [Install]
+      WantedBy=default.target
+    dest: ~/.config/systemd/user/ttyd.service
+  notify: Restart ttyd service
+  become: no
+
+- name: Enable TTYd service
+  systemd: name=ttyd user=yes enabled=yes state=started
+  become: no
+
+- name: Ensure apache2 configuration for ttyd
+  copy:
+    content: |
+      <Location {{ ttyd_path | default('/terminal') }}>
+      RewriteEngine On
+      RewriteRule / http://%{HTTP_HOST}:{{ ttyd_port | default('7681') }}/
+      </Location>
+    dest: /etc/apache2/conf-available/ttyd.conf
+  notify: Restart apache2
+
+- name: Enable ttyd configuration
+  file:
+    path=/etc/apache2/conf-enabled/terminal.conf
+    src=/etc/apache2/conf-available/ttyd.conf
+    state=link
+  notify: Restart apache2
