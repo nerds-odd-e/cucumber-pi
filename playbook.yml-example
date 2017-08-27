@@ -1,15 +1,27 @@
 --- # -*- mode: yaml -*- # ---
 
 - name: Ansible Playbook for configuring brand new Raspberry Pi
-
-  hosts: odd-pi
+  hosts:
+    - odd-pi
+  become: yes
+  remote_user: pi
   roles:
-    - pi
-    - wordpress
-    - java-develop
+    - role: pi
+    - role: vnc-web-client
+      vnc_web_client_path: /vnc
+      vnc_display_id: 99
+      vnc_geometry: 1200x900
+      tags: vnc
+    - role: wordpress
+      tags: wordpress
     - role: cucumber
       become: False
-    - robot-framework
+      tags: cucumber
+    - role: ttyd
+      ttyd_path: /terminal
+      tags:
+        - ttyd
+        - terminal
     - role: samba
       samba_users:
         - name: pi
@@ -21,7 +33,8 @@
           browseable: yes
           writeable: yes
           read_only: no
-  remote_user: pi
+      tags:
+        - samba
 
 - name: Vagrant
   hosts: vagrant
