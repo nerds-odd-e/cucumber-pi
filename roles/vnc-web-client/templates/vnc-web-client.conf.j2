@@ -1,4 +1,0 @@
-<Location /vnc>
-RewriteEngine On
-RewriteRule / http://%{HTTP_HOST}:{{ 8900 + vnc_display_id }}/vnc_auto.html?password={{ vnc_passwd }}
-</Location>

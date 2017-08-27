@@ -2,12 +2,18 @@
   apt: name=novnc
 
 - name: 'vnc configuration for apache'
-  template: src=vnc-web-client.conf.j2 dest=/etc/apache2/conf-available/vnc-web-client.conf
+  copy:
+    content: |
+      <Location {{ vnc_web_client_path | default('/vnc') }}>
+      RewriteEngine On
+      RewriteRule / http://%{HTTP_HOST}:{{ 8900 + vnc_display_id }}/vnc_auto.html?password={{ vnc_passwd }}
+      </Location>
+    dest: /etc/apache2/conf-available/vnc-web-client.conf
   notify: Restart apache2
 
 - name: 'enable vnc configuration'
   file:
-    path: /etc/apache2/conf-enabled/vnc-web-client.conf
+    path: /etc/apache2/conf-enabled/vnc.conf
     state: link
     src: ../conf-available/vnc-web-client.conf
   notify: Restart apache2
