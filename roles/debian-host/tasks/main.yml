@@ -4,7 +4,7 @@
     - upgrade packages
 
 - name: Enable en & zh locales
-  lineinfile: path=/etc/locale.gen line="{{ item }}"
+  lineinfile: path=/etc/locale.gen line="{{ item }} {{ item | regex_replace('[^.]+\.', '') }}"
   with_items: "{{ locales }}"
 
 - name: 'Ensure locales'
