@@ -2,4 +2,7 @@
   apt: name=tightvncserver
 
 - name: 'use vnc display by default'
-  template: src=vnc_display.sh dest=/etc/profile.d/
+  copy:
+    content: |
+      export DISPLAY=${DISPLAY:-:{{ vnc_display_id }}.0}
+    dest: /etc/profile.d/vnc.sh
