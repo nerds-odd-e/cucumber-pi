@@ -24,6 +24,10 @@
     executable: /bin/bash
     chdir: /usr/local/src/ttyd
 
+- name: Ensure the directory for user systemd
+  file: path="~/.config/systemd/user" state=directory
+  become: no
+
 - name: Ensure TTYd service
   copy:
     content: |
