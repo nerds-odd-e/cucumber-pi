@@ -2,12 +2,13 @@
 set -eu -o pipefail
 
 if [[ "$#" -eq 0 ]]; then
-    echo "Usage: "
-    echo "    $0 <display_id>"
-    echo ""
-    echo "Example:"
-    echo "    $0 42"
-    exit 1
+    cat <<-EOF
+		Usage:
+		    $0 <display_id>
+
+		Example:
+		    $0 42
+		EOF
 fi
 
 VNC_DISPLAY_ID="$1"
