@@ -1,2 +1,3 @@
-- name: 'Restart vncwebclient'
-  service: name=vncwebclient state=restarted
+- name: 'Restart vncwebclient service'
+  systemd: name=vncwebclient user=yes state=restarted
+  become: no

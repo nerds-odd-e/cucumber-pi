@@ -19,9 +19,28 @@
   notify: Restart apache2
 
 - name: 'vnc web client service'
-  template: src=vncwebclient dest=/etc/init.d mode=a+x
-  notify: Restart vncwebclient
+  template: src=vncwebclient dest=/usr/local/bin/ mode=a+x
+  notify: Restart vncwebclient service
 
-- name: 'enable vnc web client service'
-  service: name=vncwebclient enabled=yes state=started
-  notify: Restart vncwebclient
+- name: Ensure the directory for user systemd
+  file: path="~/.config/systemd/user" state=directory
+  become: no
+
+- name: Ensure VNC Web Client Service
+  copy:
+    content: |
+      [Unit]
+      Description=VNC Web Client
+
+      [Service]
+      ExecStart=/usr/local/bin/vncwebclient {{ vnc_display_id }}
+
+      [Install]
+      WantedBy=default.target
+    dest: ~/.config/systemd/user/vncwebclient.service
+  notify: Restart vncwebclient service
+  become: no
+
+- name: Enable vncwebclient service
+  systemd: name=vncwebclient user=yes enabled=yes state=started
+  become: no
