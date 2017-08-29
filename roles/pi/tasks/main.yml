@@ -7,6 +7,7 @@
 
 - name: 'Hostname'
   hostname: name={{ hostname }}.local
+  notify: Restart avahi
 
 - name: 'Hosts file'
   lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }}.local {{ hostname }}'

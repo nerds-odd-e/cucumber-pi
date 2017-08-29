@@ -1,2 +1,5 @@
-  - name: upgrade packages
-    apt: upgrade=safe
+- name: upgrade packages
+  apt: upgrade=safe
+
+- name: Restart avahi
+  service: name=avahi-daemon state=restarted
