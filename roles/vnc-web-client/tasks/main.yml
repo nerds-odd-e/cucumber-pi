@@ -42,5 +42,5 @@
   become: no
 
 - name: Enable vncwebclient service
-  systemd: name=vncwebclient user=yes enabled=yes state=started
+  systemd: name=vncwebclient user=yes enabled=yes state=started daemon_reload=yes
   become: no
