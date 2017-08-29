@@ -45,7 +45,7 @@
     - zhongxuanbu
 
 - name: 'WordPress wwwroot directory'
-  file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ wordpress_install_user }}" recurse=yes group=www-data mode=ug+rw,o-w
+  file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ wordpress_install_user }}" group=www-data mode=ug+rw,o-w
 
 - name: 'Update system motd'
   template: src=motd dest=/etc/motd
@@ -54,9 +54,12 @@
   template: src=install_wordpress.sh dest={{ wp_cli_home }} mode=a+x
 
 - name: 'Install WordPress using wp-cli'
-  shell: "{{ wp_cli_home }}/install_wordpress.sh"
+  shell: |
+    set -o pipefail
+    WORDPRESS_URL="http://$(hostname --all-ip-addresses | cut -d' ' -f1)/" "{{ wp_cli_home }}/install_wordpress.sh"
   args:
     creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
+    executable: /bin/bash
   become_user: "{{ wordpress_install_user }}"
 
 - name: 'remove default index.html'

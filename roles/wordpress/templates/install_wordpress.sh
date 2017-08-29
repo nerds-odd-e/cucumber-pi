@@ -1,17 +1,14 @@
 #!/bin/bash
-set -e
+set -eu -o pipefail
 
-WORDPRESS_VERSION="{{ wordpress_version }}"
-WORDPRESS_HOME="{{ wordpress_wwwroot }}"
-{% if wordpress_url is defined %}
-WORDPRESS_URL="{{ wordpress_url }}"
-{% endif %}
-WORDPRESS_URL="${WORDPRESS_URL:-http://$(hostname -f)}"
+WORDPRESS_VERSION="${WORDPRESS_VERSION:-{{ wordpress_version }}}"
+WORDPRESS_HOME="${WORDPRESS_HOME:-{{ wordpress_wwwroot }}}"
+WORDPRESS_URL="${WORDPRESS_URL:-{{ wordpress_url | default('http://$(hostname -f)') }}}"
 
-WORDPRESS_DBHOST="{{ wordpress_mysql_hostname }}"
-WORDPRESS_DBNAME="{{ wordpress_mysql_database }}"
-WORDPRESS_DBUSER="{{ wordpress_mysql_username }}"
-WORDPRESS_DBPASS="{{ wordpress_mysql_password }}"
+WORDPRESS_DBHOST="${WORDPRESS_DBHOST:-{{ wordpress_mysql_hostname }}}"
+WORDPRESS_DBNAME="${WORDPRESS_DBNAME:-{{ wordpress_mysql_database }}}"
+WORDPRESS_DBUSER="${WORDPRESS_DBUSER:-{{ wordpress_mysql_username }}}"
+WORDPRESS_DBPASS="${WORDPRESS_DBPASS:-{{ wordpress_mysql_password }}}"
 
 WP_CLI_CMD=wp
 
