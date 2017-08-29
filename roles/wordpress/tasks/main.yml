@@ -51,12 +51,12 @@
   template: src=motd dest=/etc/motd
 
 - name: 'Copy install wordpress script'
-  template: src=install_wordpress.sh dest={{ wp_cli_home }} mode=a+x
+  template: src=install_wordpress.sh.j2 dest="{{ wp_cli_home }}/install_wordpress.sh" mode=a+x
 
 - name: 'Install WordPress using wp-cli'
   shell: |
     set -o pipefail
-    WORDPRESS_URL="http://$(hostname --all-ip-addresses | cut -d' ' -f1)/" "{{ wp_cli_home }}/install_wordpress.sh"
+    "{{ wp_cli_home }}/install_wordpress.sh"
   args:
     creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
     executable: /bin/bash

@@ -1,4 +1,6 @@
-wordpress_version: 4.6.1
+wordpress_version: 4.8.1
+wordpress_theme: twentysixteen
+
 wordpress_wwwroot: /var/www/html
 # wordpress_url: http://localhost/
 
