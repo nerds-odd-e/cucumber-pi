@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 typeset -a DISK_LIST_READONLY
 
 function get_disk_list() {
@@ -40,7 +41,7 @@ function run() {
         declare SDCARD
         SDCARD="$(find_sdcard || true)"
         if test -z "$SDCARD"; then
-            read -t 2 && exit 0
+            read -t 2 -r && exit 0
             continue
         fi
 
