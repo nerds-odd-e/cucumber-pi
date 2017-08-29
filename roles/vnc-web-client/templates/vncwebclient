@@ -17,7 +17,7 @@ VNCSERVER=/usr/bin/vncserver
 VNCSERVER_ARGS=":$VNC_DISPLAY_ID -geometry {{ vnc_geometry }}"
 
 if [[ ! -f "$HOME/.vnc/passwd" ]]; then
-    mkdir -p "$HOME/.vnc/passwd"
+    mkdir -p "$HOME/.vnc"
     echo "{{ vnc_passwd }}" | vncpasswd -f > "$HOME/.vnc/passwd"
     chmod go-rwx "$HOME/.vnc/passwd"
 fi
