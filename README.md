@@ -33,6 +33,8 @@ During the writing process, press *Ctrl-T* to show the progress.
 
 ### Step 3: Enable SSH and Wi-Fi
 
+After running the below command, reinsert your SD card.
+
     ./sdcard_enable_ssh_and_wifi your_wifi_ssid your_wifi_password
 
 ### Step 4: Booting your Raspberry Pi
