@@ -9,16 +9,17 @@
   file: path={{ wp_cli_home }} state=directory
 
 - name: 'Install WordPress command line tool'
-  get_url: dest={{ wp_cli_home }}/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-
-- name: 'Make wp executable'
-  file: path={{ wp_cli_home }}/wp mode=a+x
+  get_url: dest={{ wp_cli_home }}/wp url=https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar mode=a+x
 
 - name: 'WordPress command line tool config file'
   template: src=wp-cli-config.yml dest={{ wp_cli_home }}/config.yml
 
 - name: 'WordPress command line tool profile'
-  template: src=wp-cli.sh dest=/etc/profile.d/
+  copy:
+    content: |
+      export WP_CLI_CONFIG_PATH={{ wp_cli_home }}/config.yml
+      export PATH={{ wp_cli_home }}:$PATH
+    dest: /etc/profile.d/wp-cli.sh
 
 - name: 'Copy WordPress for Odd-e data file'
   copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
