@@ -26,7 +26,7 @@ MySQL:
     Password: {{ wordpress_mysql_password }}
 
 WordPress:
-    URL: {{ wordpress_url | default('http://wordpress.local') }}
+    URL: {{ wordpress_url | default('http://' + ansible_fqdn) }}
     Username: odd-e
     Passowrd: s3cr3t
 --
