@@ -6,7 +6,7 @@
 
 - name: 'Allow from anywhere to connect'
   lineinfile:
-    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    path: "{{ mysqld_conf }}"
     regexp: '^\s*bind-address\s*=\s*'
     insertafter: "[mysqld]"
     line: "bind-address            = 0.0.0.0"
