@@ -2,16 +2,6 @@
 - name: 'Appending user {{ wordpress_install_user }} to group www-data'
   user: name={{ wordpress_install_user }} append=yes groups=www-data
 
-- name: 'Install PHP'
-  apt: name=php7.0,php7.0-fpm,libapache2-mod-php7.0,php7.0-mysql
-  notify: Restart apache2
-
-- name: Enable php7.0-fpm
-  command: a2enconf php7.0-fpm
-  args:
-    creates: /etc/apache2/conf-enabled/php7.0-fpm.conf
-  notify: Restart apache2
-
 - name: 'Ensure /opt/wp-cli exist'
   file: path={{ wp_cli_home }} state=directory
 
