@@ -36,13 +36,8 @@
       rules:
         - { bindPort: 9000, connectPort: 80 }
     - role: wordpress
-      wordpress_install_user: "{{ ansible_ssh_user }}"
       wordpress_wwwroot: /var/www/html
       wordpress_url: http://localhost:9000/
-    - role: java-develop
-      java_home: /usr/lib/jvm/java-7-openjdk-i386
     - role: cucumber
-      user: "{{ ansible_ssh_user }}"
-    - android-sdk
+      become: no
     - xvfb
-    - robot-framework
