@@ -1,0 +1,3 @@
+- name: Restart xvfb service
+  systemd: name=xvfb user=yes state=restarted daemon_reload=yes
+  become: no

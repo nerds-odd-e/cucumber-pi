@@ -1,14 +1,34 @@
 - name: "Ensure Xvfb"
   apt: name=xvfb
-
-- name: "init script for Xvfb"
-  template: src=xvfb.j2 dest=/etc/init.d/xvfb mode=a+x
+  become: yes
 
 - name: 'Default display id'
-  template: src=profile_xvfb.sh.j2 dest=/etc/profile.d/xvfb.sh
+  copy:
+    content: |
+      DISPLAY="${DISPLAY:-:{{ xvfb.display_id }}}"
+      export DISPLAY
+    dest: /etc/profile.d/xvfb.sh
+  become: yes
 
-- name: "Enable service xvfb"
-  service: name=xvfb enabled=yes
+- name: Ensure the directory for user systemd
+  file: path="~/.config/systemd/user" state=directory
+  become: no
 
-- name: "Ensure server xvfb started"
-  service: name=xvfb state=running
+- name: Ensure Xvfb Service
+  copy:
+    content: |
+      [Unit]
+      Description=Xvfb
+
+      [Service]
+      ExecStart=/usr/bin/Xvfb :{{ xvfb.display_id }} -ac
+
+      [Install]
+      WantedBy=default.target
+    dest: ~/.config/systemd/user/xvfb.service
+  notify: Restart xvfb service
+  become: no
+
+- name: Enable xvfb service
+  systemd: name=xvfb user=yes enabled=yes state=started daemon_reload=yes
+  become: no
