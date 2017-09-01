@@ -1,5 +1,5 @@
 dependencies:
-  - php7
+  - php
   - role: mysql
     mysql_database: "{{ wordpress_mysql_database }}"
     mysql_username: "{{ wordpress_mysql_username }}"

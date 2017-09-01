@@ -1,9 +1,0 @@
-- name: 'Install PHP'
-  apt: name=php7.0,php7.0-fpm,libapache2-mod-php7.0,php7.0-mysql
-  notify: Restart apache2
-
-- name: Enable php7.0-fpm
-  command: a2enconf php7.0-fpm
-  args:
-    creates: /etc/apache2/conf-enabled/php7.0-fpm.conf
-  notify: Restart apache2

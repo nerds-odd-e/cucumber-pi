@@ -1,0 +1,10 @@
+- name: 'Install PHP {{ php_version }}'
+  apt: name="php{{ php_version }},php{{ php_version }}-fpm,libapache2-mod-php{{ php_version }},php{{ php_version }}-mysql"
+  notify: Restart apache2
+
+- name: Enable php{{ php_version }}-fpm
+  command: a2enconf php{{ php_version }}-fpm
+  args:
+    creates: /etc/apache2/conf-enabled/php{{ php_version }}-fpm.conf
+  notify: Restart apache2
+  when: php_version != 5
