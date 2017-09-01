@@ -3,9 +3,10 @@
   notify:
     - upgrade packages
 
-- name: Enable en & zh locales
+- name: Enable en & zh locales, file may not exist
   lineinfile: path=/etc/locale.gen line="{{ item }} {{ item | regex_replace('[^.]+\.', '') }}"
   with_items: "{{ locales }}"
+  ignore_errors: yes
 
 - name: 'Ensure locales'
   locale_gen: name="{{ item }}"
