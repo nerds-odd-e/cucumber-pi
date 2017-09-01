@@ -4,3 +4,7 @@ playbook.yml
 hosts
 wpa_supplicant.conf
 .vagrant/
+src/
+webapp/
+wordpress-exercise/
+features/
