@@ -4,8 +4,6 @@ wordpress_theme: twentysixteen
 wordpress_wwwroot: /var/www/html
 # wordpress_url: http://localhost/
 
-wordpress_install_user: "{{ ansible_user }}"
-
 wordpress_mysql_hostname: 127.0.0.1
 wordpress_mysql_database: wordpress
 wordpress_mysql_username: wordpress

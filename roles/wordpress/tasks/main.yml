@@ -1,6 +1,6 @@
 ---
-- name: 'Appending user {{ wordpress_install_user }} to group www-data'
-  user: name={{ wordpress_install_user }} append=yes groups=www-data
+- name: 'Appending user {{ ansible_user }} to group www-data'
+  user: name={{ ansible_user }} append=yes groups=www-data
 
 - name: 'Ensure /opt/wp-cli exist'
   file: path={{ wp_cli_home }} state=directory
@@ -43,7 +43,7 @@
     - zhongxuanbu
 
 - name: 'WordPress wwwroot directory'
-  file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ wordpress_install_user }}" group=www-data mode=ug+rw,o-w
+  file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ ansible_user }}" group=www-data mode=ug+rw,o-w
 
 - name: 'Update system motd'
   template: src=motd dest=/etc/motd
@@ -58,7 +58,7 @@
   args:
     creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
     executable: /bin/bash
-  become_user: "{{ wordpress_install_user }}"
+  become: no
 
 - name: 'remove default index.html'
   file: name={{ wordpress_wwwroot }}/index.html state=absent
