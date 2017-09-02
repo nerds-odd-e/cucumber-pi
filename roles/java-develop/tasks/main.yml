@@ -10,8 +10,9 @@
 - name: 'Developer tools'
   apt: name=vim,ack-grep,git,tree,jed
 
-- name: 'Maven'
-  shell: curl --silent http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C /opt -zxv
-  args:
-    chdir: /opt
-    creates: /opt/apache-maven-{{ maven_version }}/bin/mvn
+- name: 'Maven {{ maven_version }}'
+  unarchive: >-
+    src="https://www.apache.org/dist/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    dest=/opt
+    remote_src=Yes
+    creates="/opt/apache-maven-{{ maven_version }}/bin/mvn"
