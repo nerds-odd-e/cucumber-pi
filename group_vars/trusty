@@ -1,0 +1,2 @@
+php_version: 5
+mysqld_conf: /etc/mysql/my.cnf

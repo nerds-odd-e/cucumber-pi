@@ -30,6 +30,8 @@
 
 - name: Vagrant
   hosts: vagrant
+  vars_files:
+    - "group_vars/{{ ansible_distribution_release }}"
   roles:
     - debian-host
     - role: rinetd
