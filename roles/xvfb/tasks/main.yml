@@ -13,6 +13,7 @@
 - name: Ensure the directory for user systemd
   file: path="~/.config/systemd/user" state=directory
   become: no
+  when: ansible_service_mgr == 'systemd'
 
 - name: Ensure Xvfb Service
   copy:
@@ -28,7 +29,9 @@
     dest: ~/.config/systemd/user/xvfb.service
   notify: Restart xvfb service
   become: no
+  when: ansible_service_mgr == 'systemd'
 
 - name: Enable xvfb service
   systemd: name=xvfb user=yes enabled=yes state=started daemon_reload=yes
   become: no
+  when: ansible_service_mgr == 'systemd'
