@@ -11,7 +11,7 @@
   apt: name=vim,ack-grep,git,tree,jed
 
 - name: 'Maven'
-  shell: curl --silent http://www.us.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz | tar -C /opt -zxv
+  shell: curl --silent http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C /opt -zxv
   args:
     chdir: /opt
     creates: /opt/apache-maven-{{ maven_version }}/bin/mvn
