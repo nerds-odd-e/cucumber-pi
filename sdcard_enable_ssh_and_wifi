@@ -2,7 +2,7 @@
 set -eu -o pipefail
 
 # shellcheck source=./sdcard_function.inc.sh
-source "$(dirname "$0")/sdcard_function.inc.sh"
+source "${BASH_SOURCE%/*}/sdcard_function.inc.sh"
 
 declare SSID=
 declare PSK=
