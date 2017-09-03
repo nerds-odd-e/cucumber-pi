@@ -30,9 +30,22 @@ fi
 
 function write_raspberry_img() {
     diskutil info "$SDCARD"
+    local SDCARD_SIZE="$(diskutil info "$SDCARD" | fgrep 'Disk Size:' | egrep -o '[0-9]+ Bytes' | cut -d' ' -f1)"
+    local SDCARD_SIZE_MAX="$(( 32 * 1024 * 1024 * 1024))"
 
-    for _LOOP in $(seq 15 -1 1); do
-        echo -n "Will write to $SDCARD after $_LOOP seconds. Press Ctrl-C if you want to break."$'\r'
+    if (( SDCARD_SIZE > SDCARD_SIZE_MAX )); then
+        echo "##############################################################################################"
+        echo "# The capacity of disk $SDCARD is greater than 32GB. We will skip it for security reason! #"
+        echo "##############################################################################################"
+        skip_disk "$SDCARD"
+        return 1
+    fi
+
+    echo ""
+    echo "CAUTION: All data on disk $SDCARD will be destroyed!!!"
+    echo ""
+    for _LOOP in {30..1}; do
+        echo -n $'\r'"Will wipe disk $SDCARD after $_LOOP seconds. Press Ctrl-C if you want to break."
         sleep 1 || exit 2
     done
 
