@@ -35,7 +35,8 @@
       gem sources --remove https://rubygems.org/;
       gem sources -a https://ruby.taobao.org/;
       gem sources --list;
-      gem install --no-rdoc --no-ri cucumber capybara capybara-mechanize rspec;
+      gem install --no-rdoc --no-ri cucumber rspec;
+      gem install --no-rdoc --no-ri --version 1.4.1 capybara-mechanize;
       gem install --no-rdoc --no-ri --version 1.12.5 bundler;
     args:
       executable: /bin/bash
