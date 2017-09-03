@@ -41,6 +41,7 @@
     - xinzengbianjiyonghu
     - xiugaimima
     - zhongxuanbu
+    - missing_steps
 
 - name: 'WordPress wwwroot directory'
   file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ ansible_user }}" group=www-data mode=ug+rw,o-w
