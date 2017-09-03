@@ -36,11 +36,13 @@
       gem sources -a https://ruby.taobao.org/;
       gem sources --list;
       gem install --no-rdoc --no-ri cucumber rspec;
-      gem install --no-rdoc --no-ri --version 1.4.1 capybara-mechanize;
       gem install --no-rdoc --no-ri --version 1.12.5 bundler;
+      gem list --installed capybara-mechanize && \
+        gem uninstall --all capybara-mechanize
+      gem install --no-rdoc --no-ri --version 1.4.1 capybara-mechanize;
     args:
       executable: /bin/bash
-      creates: "~/.rvm/gems/ruby-{{ ruby_version }}/gems/bundler-1.12.5"
+      creates: "~/.rvm/gems/ruby-{{ ruby_version }}/gems/capybara-mechanize-1.4.1"
   
   - name: 'JRuby'
     shell: |
