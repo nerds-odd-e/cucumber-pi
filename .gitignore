@@ -8,3 +8,4 @@ src/
 webapp/
 wordpress-exercise/
 features/
+*.tgz
