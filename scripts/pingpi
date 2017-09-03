@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [[ "$#" -eq 0 ]]; then
+    echo "Usage: Ping all PIs"
+    echo "   $0 20 21 22"
+    exit 1
+fi
+
+parallel --keep-order -j0 "ping -c 5 pi{1} | grep '^64 bytes' | tail -1" ::: "$@"
