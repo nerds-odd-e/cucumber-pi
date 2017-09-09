@@ -65,10 +65,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
+
+    ansible.raw_arguments = []
+
     unless ENV['ANSIBLE_START_AT_TASK'].nil?
-      ansible.raw_arguments = []
       ansible.raw_arguments << "--start-at-task"
       ansible.raw_arguments.push(ENV['ANSIBLE_START_AT_TASK'])
+    end
+    unless ENV['ANSIBLE_OPTS'].nil?
+      ansible.raw_arguments.concat ENV['ANSIBLE_OPTS'].split(/\s+/)
     end
   end
 end
