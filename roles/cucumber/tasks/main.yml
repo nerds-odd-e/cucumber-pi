@@ -32,9 +32,6 @@
       source ~/.rvm/scripts/rvm;
       export PATH="$PATH:$HOME/.rvm/bin"
       rvm use ruby-{{ ruby_version }} --default;
-      gem sources --remove https://rubygems.org/;
-      gem sources -a https://ruby.taobao.org/;
-      gem sources --list;
       gem install --no-rdoc --no-ri cucumber rspec;
       gem install --no-rdoc --no-ri --version 1.12.5 bundler;
       gem list --installed capybara-mechanize && \
