@@ -7,13 +7,12 @@
   remote_user: pi
   roles:
     - pi
+    - role: atdd-course
+      wordpress_url: "http://{{ ansible_all_ipv4_addresses[0] }}/"
     - role: vnc-web-client
       vnc_web_client_path: /vnc
       vnc_display_id: 99
       vnc_geometry: 1200x900
-    - wordpress
-    - role: cucumber
-      become: False
     - role: ttyd
       ttyd_path: /terminal
     - role: samba
