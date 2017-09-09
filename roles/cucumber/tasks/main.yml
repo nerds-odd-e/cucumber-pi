@@ -48,6 +48,12 @@
     args:
       executable: /bin/bash
       creates: "~/.rvm/rubies/jruby-{{ jruby_version }}/bin/jruby"
+
+  - name: Auto load RVM if inside Byobu
+    lineinfile:
+      path: "~/.bashrc"
+      line: test -n "$BYOBU_TTY" && source "$HOME/.rvm/scripts/rvm"
+
   become: no
 
 - name: 'cucumber-pi folder'

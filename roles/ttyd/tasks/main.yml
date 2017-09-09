@@ -1,6 +1,9 @@
 - name: Ensure tools that needed by compiling ttyd
   apt: name=cmake,g++,pkg-config,git,vim-common,libwebsockets-dev,libjson-c-dev,libssl-dev
 
+- name: Ensure byobu
+  apt: name=byobu
+
 - name: Ensure the source directory for ttyd
   file: path=/usr/local/src/ttyd state=directory
 
@@ -35,7 +38,7 @@
       Description=TTYd Terminal
 
       [Service]
-      ExecStart=/usr/local/bin/ttyd --port {{ ttyd_port | default('7681') }} /bin/bash -l
+      ExecStart=/usr/local/bin/ttyd --port {{ ttyd_port | default('7681') }} /usr/bin/byobu
 
       [Install]
       WantedBy=default.target
