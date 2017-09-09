@@ -1,0 +1,3 @@
+dependencies:
+  - role: xvfb
+    become: True

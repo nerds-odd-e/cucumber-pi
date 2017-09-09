@@ -18,48 +18,8 @@
       export PATH={{ wp_cli_home }}:$PATH
     dest: /etc/profile.d/wp-cli.sh
 
-- name: 'Copy WordPress for Odd-e data file'
-  copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
-
-- name: 'ensure wordpress utils exist'
-  template: src={{ item }} dest=/usr/bin mode=a+x
-  with_items:
-    - wordpress_switch_to_url
-    - wordpress_switch_to_ip
-
-- name: 'scripts for ATDD course'
-  copy: src={{ item }} dest=/usr/bin mode=a+x
-  with_items:
-    - jinzhipinglun
-    - keyipinglun
-    - shanchupinglun
-    - shanchuyonghu
-    - shenhepinglun
-    - suoyoudeyonghu
-    - tianjiayonghu
-    - wordpress_reset_config.sh
-    - xinzengbianjiyonghu
-    - xiugaimima
-    - zhongxuanbu
-    - missing_steps
-
 - name: 'WordPress wwwroot directory'
   file: path="{{ wordpress_wwwroot }}" state=directory owner="{{ ansible_user }}" group=www-data mode=ug+rw,o-w
-
-- name: 'Update system motd'
-  template: src=motd dest=/etc/motd
-
-- name: 'Copy install wordpress script'
-  template: src=install_wordpress.sh.j2 dest="{{ wp_cli_home }}/install_wordpress.sh" mode=a+x
-
-- name: 'Install WordPress using wp-cli'
-  shell: |
-    set -o pipefail
-    "{{ wp_cli_home }}/install_wordpress.sh"
-  args:
-    creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
-    executable: /bin/bash
-  become: no
 
 - name: 'remove default index.html'
   file: name={{ wordpress_wwwroot }}/index.html state=absent
@@ -71,6 +31,16 @@
 - name: 'Allow .htaccess overwriten for default website'
   template: src=default_www_htaccess.conf.j2 dest=/etc/apache2/conf-enabled/default_www_htaccess.conf
   notify: Restart apache2
+
+- name: 'Ensure install script for WordPress'
+  template: src=install_wordpress.sh.j2 dest="{{ wp_cli_home }}/install_wordpress.sh" mode=a+x
+
+- name: Install WordPress
+  shell: "{{ wp_cli_home }}/install_wordpress.sh"
+  args:
+    creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
+    executable: /bin/bash
+  become: no
 
 - name: '.htaccess for WordPress'
   copy: src=htaccess.txt dest={{ wordpress_wwwroot }}/.htaccess owner=www-data group=www-data mode=ug+rw,o-w

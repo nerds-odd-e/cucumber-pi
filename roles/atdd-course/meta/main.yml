@@ -1,0 +1,11 @@
+dependencies:
+  - role: wordpress
+    wordpress_version: 4.8.1
+    wordpress_title: Specification By Example Workshop
+    wordpress_admin_user: odd-e
+    wordpress_admin_password: s3cr3t
+    wordpress_admin_email: chaifeng@odd-e.com
+    wordpress_theme: twentysixteen
+    become: True
+  - role: cucumber
+    become: False

@@ -1,0 +1,69 @@
+#!/bin/bash
+# Install Guide for Specification By Example Site
+
+## Meta
+
+    set -eu -o pipefail
+
+### WordPress
+
+    WORDPRESS_VERSION="${WORDPRESS_VERSION:-{{ wordpress_version }}}"
+    WORDPRESS_HOME="${WORDPRESS_HOME:-{{ wordpress_wwwroot }}}"
+    WORDPRESS_URL="${WORDPRESS_URL:-{{ wordpress_url | default('http://$(hostname -f)') }}}"
+
+### WordPress Command Line Tool
+
+    source /etc/profile.d/wp-cli.sh
+
+## Reinstall WordPress
+
+### Remove all tables from database
+
+    wp db reset --yes
+
+### Install WordPress
+
+    "{{ wp_cli_home }}/install_wordpress.sh"
+
+### Ensure WordPress Plugins
+
+    wp plugin install wordpress-importer --activate
+    wp plugin install disable-google-fonts --activate
+
+### Remove default posts
+
+    wp post delete 1 2
+
+### Import site
+
+    wp import --authors=skip "$(dirname "$0")/specificationbyexampleworkshop.wordpress.xml"
+
+### Update plugins and themes
+
+    wp core update-db
+    wp plugin update --all || true
+    wp theme  update --all || true
+
+### Create an editor
+
+    wp user create tom tom@chaifeng.com --role=editor \
+       --user_pass=s3cr3t --first_name=Tom
+
+### Create a subscriber
+
+    wp user create mary mary@chaifeng.com --role=subscriber \
+       --user_pass=s3cr3t --first_name=Mary
+
+### Reset all configurations
+
+    /usr/bin/wordpress_reset_config.sh
+    /usr/bin/wordpress_switch_to_url "${WORDPRESS_URL}"
+
+### Done
+
+    date > "${WORDPRESS_HOME}/wordpress_${WORDPRESS_VERSION}_atdd_course.txt"
+
+## File
+
+    # -*- mode: sh -*-
+    # vi: set ft=sh :

@@ -1,3 +1,8 @@
+wordpress_title: "It's a  WordPress Site"
+wordpress_admin_user: admin
+wordpress_admin_password: admin
+wordpress_admin_email: admin@example.com
+
 wordpress_version: 4.8.1
 wordpress_theme: twentysixteen
 

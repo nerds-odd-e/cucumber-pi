@@ -37,9 +37,5 @@
     - role: rinetd
       rules:
         - { bindPort: 9000, connectPort: 80 }
-    - role: wordpress
-      wordpress_wwwroot: /var/www/html
+    - role: atdd-course
       wordpress_url: http://localhost:9000/
-    - role: cucumber
-      become: no
-    - xvfb

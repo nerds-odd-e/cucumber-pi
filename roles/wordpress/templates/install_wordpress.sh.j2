@@ -1,7 +1,7 @@
 #!/bin/bash
-# Install Guide for Specification By Example Site
+# Install Guide for WordPress
 
-## Meta
+## Meta Data
 
     set -eu -o pipefail
 
@@ -10,6 +10,13 @@
     WORDPRESS_VERSION="${WORDPRESS_VERSION:-{{ wordpress_version }}}"
     WORDPRESS_HOME="${WORDPRESS_HOME:-{{ wordpress_wwwroot }}}"
     WORDPRESS_URL="${WORDPRESS_URL:-{{ wordpress_url | default('http://$(hostname -f)') }}}"
+
+    WORDPRESS_TITLE="${WORDPRESS_TITLE:-{{ wordpress_title }}}"
+    WORDPRESS_ADMIN_USER="${WORDPRESS_ADMIN_USER:-{{ wordpress_admin_user }}}"
+    WORDPRESS_ADMIN_PASSWORD="${WORDPRESS_ADMIN_PASSWORD:-{{ wordpress_admin_password }}}"
+    WORDPRESS_ADMIN_EMAIL="${WORDPRESS_ADMIN_EMAIL:-{{ wordpress_admin_email }}}"
+
+    WORDPRESS_THEME="${WORDPRESS_THEME:-{{ wordpress_theme }}}"
 
 ### Database
 
@@ -24,72 +31,35 @@
 
 ## Install WordPress
 
-### Remove previous installed WordPress
-
-    find "${WORDPRESS_HOME}/" -mindepth 1 -maxdepth 1 \
-         -not -name .htaccess \
-         -exec rm -r {} \;
-
 ### Download WordPress
 
     wp core download --force --path="${WORDPRESS_HOME}" \
        --locale=en_US --version="${WORDPRESS_VERSION}"
 
-### Create Database
+### Create configuration file
 
-    wp core config --dbname="${WORDPRESS_DBNAME}" --dbuser="${WORDPRESS_DBUSER}" \
+    wp config create --force \
+       --dbname="${WORDPRESS_DBNAME}" --dbuser="${WORDPRESS_DBUSER}" \
        --dbpass="${WORDPRESS_DBPASS}" --dbhost="${WORDPRESS_DBHOST}" \
        --dbprefix=wp_ --dbcharset=utf8
 
-    wp db drop --yes || true
-    wp db create
+### Install WordPress
+
+    wp db check || wp db create
 
     wp core install --url="${WORDPRESS_URL}" \
-       --title="Specification By Example Workshop" \
-       --admin_user=odd-e --admin_password=s3cr3t \
-       --admin_email=chaifeng@odd-e.com
+       --title="$WORDPRESS_TITLE" \
+       --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
+       --admin_email="$WORDPRESS_ADMIN_EMAIL"
 
-### Ensure WordPress Plugins
+### Switch a theme
 
-    wp plugin install wordpress-importer --activate
-    wp plugin install disable-google-fonts --activate
-
-### Change default theme
-
-    wp theme activate {{ wordpress_theme }}
-
-### Remove default posts
-
-    wp post delete 1 2
-
-### Import site
-
-    wp import --authors=skip "$(dirname "$0")/specificationbyexampleworkshop.wordpress.xml"
-
-### Update plugins and themes
-
-    wp core update-db
-    wp plugin update --all || true
-    wp theme  update --all || true
-
-### Create an editor
-
-    wp user create tom tom@chaifeng.com --role=editor \
-       --user_pass=s3cr3t --first_name=Tom
-
-### Create a subscriber
-
-    wp user create mary mary@chaifeng.com --role=subscriber \
-       --user_pass=s3cr3t --first_name=Mary
-
-### Reset all configurations
-
-    /usr/bin/wordpress_reset_config.sh
-    /usr/bin/wordpress_switch_to_url "${WORDPRESS_URL}"
+    [[ -n "$WORDPRESS_THEME" ]] && \
+        wp theme activate "$WORDPRESS_THEME"
 
 ### Done
 
-    date > "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}.txt"
+    date > "${WORDPRESS_HOME}/wordpress_${WORDPRESS_VERSION}.txt"
 
 ## File
 

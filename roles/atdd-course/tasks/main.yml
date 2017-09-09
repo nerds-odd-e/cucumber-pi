@@ -1,0 +1,40 @@
+- name: 'Copy WordPress for Odd-e data file'
+  copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
+
+- name: 'ensure wordpress utils exist'
+  template: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - wordpress_switch_to_url
+    - wordpress_switch_to_ip
+
+- name: 'scripts for ATDD course'
+  copy: src={{ item }} dest=/usr/bin mode=a+x
+  with_items:
+    - jinzhipinglun
+    - keyipinglun
+    - shanchupinglun
+    - shanchuyonghu
+    - shenhepinglun
+    - suoyoudeyonghu
+    - tianjiayonghu
+    - wordpress_reset_config.sh
+    - xinzengbianjiyonghu
+    - xiugaimima
+    - zhongxuanbu
+    - missing_steps
+
+- name: 'Update system motd'
+  template: src=motd dest=/etc/motd
+
+- name: 'Ensure script used for importing ATDD course'
+  template: src=import_atdd_course.sh.j2 dest="{{ wp_cli_home }}/import_atdd_course.sh" mode=a+x
+
+- name: 'Import ATDD course'
+  shell: |
+    set -o pipefail
+    "{{ wp_cli_home }}/import_atdd_course.sh"
+  args:
+    creates: "{{ wordpress_wwwroot }}/wordpress_{{ wordpress_version }}_atdd_course.txt"
+    executable: /bin/bash
+  become: no
+
