@@ -11,3 +11,9 @@
 
 - name: 'Hosts file'
   lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1\t.+' line='127.0.1.1\t{{ hostname }}.local {{ hostname }}'
+
+- name: Disable auto-login on TTY1
+  file:
+    path: /etc/systemd/system/getty.target.wants/getty@tty1.service
+    state: link
+    src: /lib/systemd/system/getty@.service

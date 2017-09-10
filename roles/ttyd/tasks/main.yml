@@ -3,6 +3,12 @@
 
 - name: Ensure byobu
   apt: name=byobu
+  register: byobu_installed
+
+- name: Enable byobu for current user
+  shell: byobu-enable
+  when: byobu_installed | changed
+  become: no
 
 - name: Ensure the source directory for ttyd
   file: path=/usr/local/src/ttyd state=directory
