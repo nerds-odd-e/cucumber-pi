@@ -1,5 +1,5 @@
 - name: 'Update system packages cache every a week'
-  apt: update_cache=yes cache_valid_time=604800
+  apt: name=aptitude update_cache=yes cache_valid_time=604800
   notify:
     - upgrade packages
 
