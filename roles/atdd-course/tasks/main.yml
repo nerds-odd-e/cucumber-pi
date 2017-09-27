@@ -1,5 +1,6 @@
 - name: 'Copy WordPress for Odd-e data file'
   copy: src=specificationbyexampleworkshop.wordpress.xml dest={{ wp_cli_home }}
+  tags: atdd-course-template
 
 - name: 'ensure wordpress utils exist'
   template: src={{ item }} dest=/usr/bin mode=a+x

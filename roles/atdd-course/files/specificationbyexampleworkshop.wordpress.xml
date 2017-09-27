@@ -50,7 +50,43 @@
   <dc:creator>odd-e</dc:creator>
   <guid isPermaLink="false">http://wordpress.local/?p=5</guid>
   <description/>
-  <content:encoded><![CDATA[How to use Jed?
+  <content:encoded><![CDATA[Links:
+<ul>
+ 	<li><a href="/terminal">Terminal</a></li>
+ 	<li><a href="/vnc">VNC</a></li>
+</ul>
+
+<hr />
+
+Byobu:
+<table>
+<tbody>
+<tr>
+<th>Key</th>
+<th>Function</th>
+</tr>
+<tr>
+<td>F2</td>
+<td>Create a new window</td>
+</tr>
+<tr>
+<td>F3</td>
+<td>Move to previous window</td>
+</tr>
+<tr>
+<td>F4</td>
+<td>Move to next window</td>
+</tr>
+<tr>
+<td>F6</td>
+<td>Detach from terminal</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+Jed:
 <pre>| Key           | Action              |
 |---------------|---------------------|
 | Ctrl-x Ctrl-s | Save                |
@@ -59,13 +95,7 @@
 | Ctrl-e        | Go to end of line   |
 | Ctrl-k        | Kill to end of line |
 | Ctrl-_        | Undo                |
-</pre>
-
-Useful links:
-
-<a href="/vnc">Access Desktop</a>]]>
-
-</content:encoded>
+</pre>]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>5</wp:post_id>
   <wp:post_date>2014-03-15 11:22:33</wp:post_date>
