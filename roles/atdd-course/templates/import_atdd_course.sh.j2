@@ -27,8 +27,10 @@
 
 ### Ensure WordPress Plugins
 
-    wp plugin install wordpress-importer --activate
-    wp plugin install disable-google-fonts --activate
+    wp plugin install wordpress-importer || true
+    wp plugin install disable-google-fonts || true
+    wp plugin activate wordpress-importer
+    wp plugin activate disable-google-fonts
 
 ### Remove default posts
 
