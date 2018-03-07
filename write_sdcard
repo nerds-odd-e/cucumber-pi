@@ -30,8 +30,9 @@ fi
 
 function write_raspberry_img() {
     diskutil info "$SDCARD"
-    local SDCARD_SIZE="$(diskutil info "$SDCARD" | fgrep 'Disk Size:' | egrep -o '[0-9]+ Bytes' | cut -d' ' -f1)"
-    local SDCARD_SIZE_MAX="$(( 32 * 1024 * 1024 * 1024))"
+    local SDCARD_SIZE SDCARD_SIZE_MAX
+    SDCARD_SIZE="$(diskutil info "$SDCARD" | grep -F 'Disk Size:' | grep -Eo '[0-9]+ Bytes' | cut -d' ' -f1)"
+    SDCARD_SIZE_MAX="$(( 32 * 1024 * 1024 * 1024))"
 
     if (( SDCARD_SIZE > SDCARD_SIZE_MAX )); then
         echo "##############################################################################################"
@@ -49,11 +50,11 @@ function write_raspberry_img() {
         sleep 1 || exit 2
     done
 
-    echo -e "\nWriting to SD card $SDCARD ..."
+    printf '\nWriting to SD card %s ...\n' "$SDCARD"
     du -h "$RASPBERRY_IMG"
     echo "Press Ctrl-T to show the writing progress, the size of image is $(stat --printf='%s' "$RASPBERRY_IMG")"
     diskutil unmountDisk "$SDCARD"
-    gen_write_sdcard_command "$SDCARD" | time bash -x
+    gen_write_sdcard_command "$SDCARD" | time caffeinate -im bash -x
 
     sleep 2
 }
