@@ -52,8 +52,7 @@
   - name: Auto load RVM if inside Byobu
     lineinfile:
       path: "~/.bashrc"
-      line: test -n "$BYOBU_TTY" && source "$HOME/.rvm/scripts/rvm"
-
+      line: if [[ -n "$BYOBU_TTY" ]]; then source "$HOME/.rvm/scripts/rvm"; source /etc/profile.d/wp-cli.sh; source /etc/profile.d/cucumber.sh; fi
   become: no
 
 - name: 'cucumber-pi folder'
