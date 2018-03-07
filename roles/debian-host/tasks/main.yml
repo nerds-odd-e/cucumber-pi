@@ -14,3 +14,14 @@
 
 - name: 'Ensure avahi'
   apt: name=avahi-daemon
+
+- name: Set timezone
+  copy:
+    dest: "/etc/timezone"
+    content: |
+      {{ debian_timezone | default("Etc/UTC") }}
+  register: timezone_changed
+
+- name: Change timezone
+  shell: timedatectl set-timezone "$(cat /etc/timezone)"
+  when: timezone_changed | changed
