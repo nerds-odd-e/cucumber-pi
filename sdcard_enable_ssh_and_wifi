@@ -35,7 +35,8 @@ fi
 
 
 function enable_ssh_and_wifi(){
-    BOOT_VOLUME="$(mount | grep -E "^${SDCARD}s1 " | cut -d' ' -f3)"
+    BOOT_VOLUME="$(mount | mount | grep -E "^${SDCARD}s1 " | sed -e "s/^.\+ on //" -e "s/ (.\+)\$//")"
+    [[ -z "$BOOT_VOLUME" ]] && return 1
     echo "Found boot at $BOOT_VOLUME"
     if [[ -f "${BOOT_VOLUME}/ssh" ]]; then
         echo "${BOOT_VOLUME}/ssh has been exist."
