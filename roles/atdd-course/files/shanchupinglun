@@ -10,7 +10,7 @@ QUERY_PARAMS=(--format=ids)
 
 AUTHOR_EMAIL="$1"
 if ! echo "$AUTHOR_EMAIL" | grep -F "@" 1>/dev/null 2>&1; then
-    AUTHOR_EMAIL="$1@chaifeng.com"
+    AUTHOR_EMAIL="$1@example.com"
 fi
 QUERY_PARAMS+=("--author_email=$AUTHOR_EMAIL")
 
