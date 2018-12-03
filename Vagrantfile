@@ -64,7 +64,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
+    if File.exist?("playbook.yml")
+      ansible.playbook = "playbook.yml"
+    else
+      ansible.playbook = "playbook.yml-example"
+    end
 
     ansible.raw_arguments = []
 
