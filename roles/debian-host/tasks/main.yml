@@ -24,4 +24,4 @@
 
 - name: Change timezone
   shell: timedatectl set-timezone "$(cat /etc/timezone)"
-  when: timezone_changed | changed
+  when: timezone_changed is changed

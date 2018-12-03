@@ -1,8 +1,5 @@
 - name: 'Install MySQL server'
-  apt: name={{ item }}
-  with_items:
-    - python-mysqldb
-    - mysql-server
+  apt: name=python-mysqldb,mysql-server
 
 - name: 'Allow from anywhere to connect'
   lineinfile:
