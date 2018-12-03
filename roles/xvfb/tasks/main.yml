@@ -32,6 +32,6 @@
   when: ansible_service_mgr == 'systemd'
 
 - name: Enable xvfb service
-  systemd: name=xvfb user=yes enabled=yes state=started daemon_reload=yes
+  systemd: name=xvfb scope=user enabled=yes state=started daemon_reload=yes
   become: no
   when: ansible_service_mgr == 'systemd'
