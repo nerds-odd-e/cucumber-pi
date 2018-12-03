@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "vagrant"
 
-  config.vm.box = "bento/ubuntu-16.04-i386"
+  config.vm.box = "bento/ubuntu-18.04"
 
   config.vm.hostname = "atdd.local"
 
