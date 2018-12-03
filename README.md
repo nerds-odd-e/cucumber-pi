@@ -3,13 +3,13 @@
 ## Quick start
 
     brew update
-    brew install caskroom/cask/brew-cask
-    brew cask install virtualbox vagrant
+    brew cask install virtualbox virtualbox-extension-pack vagrant
     brew install ansible
     cp playbook.yml-example playbook.yml
     vagrant up
 
-### reconfigure vagrant
+### Reconfigure the VM
+
     vagrant provision
     # or
     vagrant reload --provision
